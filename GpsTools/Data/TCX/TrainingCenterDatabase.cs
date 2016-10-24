@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Xml.Serialization;
 
 namespace GpsTools.Data.TCX
 {
+    [XmlRoot("TrainingCenterDatabase", Namespace = "http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2", IsNullable = false)]
+    [XmlInclude(typeof(Author))]
     public class TrainingCenterDatabase
     {
-        public IEnumerable<Activity> Activities { get; set; }
+        [XmlElement("Activities")]
+        public ActivityCollection Activities { get; set; }
 
+        [XmlElement("Author")]
         public Author Author { get; set; }
     }
 }

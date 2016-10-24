@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{3532B571-8340-4F0F-A67E-B6A89084F152}</ProjectGuid>
+    <ProjectGuid>{49D33D44-4EFA-4A10-8D65-BA8CE7B22179}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GpsTools</RootNamespace>
-    <AssemblyName>GpsTools</AssemblyName>
+    <RootNamespace>UnitTests</RootNamespace>
+    <AssemblyName>UnitTests</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
@@ -16,7 +16,8 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>GpsTools_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>UnitTests_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <UnitTestPlatformVersion Condition="'$(UnitTestPlatformVersion)' == ''">14.0</UnitTestPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -88,72 +89,33 @@
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="Data\Samples\2016-09-05_Lunch Run_Running %281%29.tcx" />
-    <Content Include="Data\Samples\2016-09-05_Lunch Run_Running.tcx" />
+    <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
     <None Include="project.json" />
+    <SDKReference Include="MSTestFramework.Universal, Version=$(UnitTestPlatformVersion)" />
+    <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\NavMenuListView.cs" />
-    <Compile Include="Controls\PageHeader.xaml.cs">
-      <DependentUpon>PageHeader.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AppShell.xaml.cs">
-      <DependentUpon>AppShell.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Data\Gprx.cs" />
-    <Compile Include="Data\GprxLoader.cs" />
-    <Compile Include="Data\GpsDataManager.cs" />
-    <Compile Include="Data\GpsLoader.cs" />
-    <Compile Include="Data\GpsStorageFileInfo.cs" />
-    <Compile Include="Data\IGpsFileInfo.cs" />
-    <Compile Include="Data\TCX\Activity.cs" />
-    <Compile Include="Data\TCX\ActivityCollection.cs" />
-    <Compile Include="Data\TCX\Author.cs" />
-    <Compile Include="Data\TCX\TrackpointExtensions.cs" />
-    <Compile Include="Data\TCX\HeartRateInBeatsPerMinute.cs" />
-    <Compile Include="Data\TCX\Position.cs" />
-    <Compile Include="Data\TCX\TpxExtensions.cs" />
-    <Compile Include="Data\TCX\TrackpointCollection.cs" />
-    <Compile Include="Data\TCX\TrainingCenterDatabase.cs" />
-    <Compile Include="Data\TCX\Lap.cs" />
-    <Compile Include="Data\TCX\Trackpoint.cs" />
-    <Compile Include="Utils\Extensions.cs" />
-    <Compile Include="NavMenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemInformationHelpers.cs" />
-    <Compile Include="Triggers\IsTenFootTrigger.cs" />
-    <Compile Include="Views\BasicPage.xaml.cs">
-      <DependentUpon>BasicPage.xaml</DependentUpon>
+    <Compile Include="Tests\Data\GpsFileInfo.cs" />
+    <Compile Include="UnitTestApp.xaml.cs">
+      <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BasicSubPage.xaml.cs">
-      <DependentUpon>BasicSubPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MergerPage.xaml.cs">
-      <DependentUpon>MergerPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CommandBarPage.xaml.cs">
-      <DependentUpon>CommandBarPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DrillInPage.xaml.cs">
-      <DependentUpon>DrillInPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LandingPage.xaml.cs">
-      <DependentUpon>LandingPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Tests\Data\GprxLoaderTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="UnitTestApp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="GpsTools_TemporaryKey.pfx" />
+    <None Include="UnitTests_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\StoreLogo.scale-100.png" />
-    <Content Include="Properties\Default.rd.xml" />
+    <Content Include="Properties\UnitTestApp.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
@@ -163,61 +125,16 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Page Include="Controls\PageHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="AppShell.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Styles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Page>
-    <Page Include="Styles\TenFootStylesheet.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Page>
-    <Page Include="Views\BasicPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\BasicSubPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\MergerPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\CommandBarPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\DrillInPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\LandingPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GpsTools.Lib\GpsTools.Lib.csproj">
-      <Project>{8453735b-5fdf-48ca-b203-9435e6cee85b}</Project>
-      <Name>GpsTools.Lib</Name>
+    <ProjectReference Include="..\GpsTools\GpsTools.csproj">
+      <Project>{3532b571-8340-4f0f-a67e-b6a89084f152}</Project>
+      <Name>GpsTools</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\Samples\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

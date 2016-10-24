@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -19,7 +20,7 @@ namespace GpsTools.Data
         public async Task<Stream> GetStream()
         {
             var stream = await this.storageFile.OpenAsync(FileAccessMode.Read);
-            return stream.GetInputStreamAt(0);
+            return stream.AsStreamForRead();
         }
 
         public override int GetHashCode()

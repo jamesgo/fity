@@ -3,23 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace GpsTools.Data.TCX
 {
+    [XmlInclude(typeof(HeartRateInBeatsPerMinute))]
     public class Trackpoint
     {
-        public DateTime? Time { get; set; }
+        [XmlElement("Time")]
+        public string Time { get; set; }
 
+        [XmlIgnore]
+        public DateTime? TimeUtc => this.Time != null ? (DateTime?)DateTime.Parse(this.Time) : null;
+
+        [XmlElement("DistanceMeters")]
         public double DistanceMeters { get; set; }
 
-        public double LatitudeDegrees { get; set; }
+        [XmlElement("Position")]
+        public Position Position { get; set; }
 
-        public double LongitudeDegrees { get; set; }
-
+        [XmlElement("AltitudeMeters")]
         public float AltitudeMeters { get; set; }
 
-        public float HeartRateBpm { get; set; }
+        [XmlElement("HeartRateBpm")]
+        public HeartRateInBeatsPerMinute HeartRateBpm { get; set; }
 
-        public double Speed { get; set; }
+        [XmlElement("Extensions")]
+        public TrackpointExtensions Extensions { get; set; }
     }
 }
