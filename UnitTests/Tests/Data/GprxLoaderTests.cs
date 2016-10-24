@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using GpsTools.Data;
+using Fity.Data;
 using Windows.Storage;
 using System.Threading.Tasks;
 
