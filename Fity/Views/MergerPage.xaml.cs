@@ -13,6 +13,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
@@ -39,6 +40,7 @@ namespace Fity.Views
         private void MergerPage_Loaded(object sender, RoutedEventArgs e)
         {
             this.DataManager = new GpsDataManager();
+            this.FilesMap.MapServiceToken = Constants.BingMapsKey;
         }
 
         private async void MergerPage_AddFile(object sender, RoutedEventArgs e)
@@ -57,32 +59,40 @@ namespace Fity.Views
                 foreach (StorageFile file in files)
                 {
                     this.FilesList.Items.Add(file.Name);
-                    this.DataManager.AddToSession(file.ToGpsFileInfo());
+                    var gpsFileInfo = file.ToGpsFileInfo();
+                    var loader = this.DataManager.AddToSession(gpsFileInfo);
+
+                    foreach (var trackpoint in (await loader.Task).TrainingCenterDatabase.Activities.Activities.First().Lap.Trackpoints.Trackpoints)
+                    {
+                        var icon = new MapIcon();
+                        icon.Location = new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition
+                        {
+                            Latitude = trackpoint.Position.LatitudeDegrees,
+                            Longitude = trackpoint.Position.LongitudeDegrees
+                        });
+                        this.FilesMap.MapElements.Add(icon);
+                    }
                 }
             }
-            else
-            {
-                this.FilesList.Items.Clear();
-            }
         }
 
-        private void MergerPage_BulkDelete(object sender, RoutedEventArgs e)
+        private void MergerPage_List(object sender, RoutedEventArgs e)
         {
-
+            this.FilesList.Visibility = Visibility.Visible;
+            this.FilesMap.Visibility = Visibility.Collapsed;
         }
 
-        private void MergerPage_Next(object sender, RoutedEventArgs e)
+        private void MergerPage_Map(object sender, RoutedEventArgs e)
         {
-            if (!this.DataManager.IsLoadComplete)
-            {
-                return;
-            }
+            this.FilesList.Visibility = Visibility.Collapsed;
+            this.FilesMap.Visibility = Visibility.Visible;
         }
 
         private void MergerPage_Clear(object sender, RoutedEventArgs e)
         {
             this.FilesList.Items.Clear();
             this.DataManager.Clear();
+            this.FilesMap.MapElements.Clear();
         }
     }
 }

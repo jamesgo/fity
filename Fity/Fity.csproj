@@ -121,6 +121,7 @@
     <Compile Include="Data\TCX\TrainingCenterDatabase.cs" />
     <Compile Include="Data\TCX\Lap.cs" />
     <Compile Include="Data\TCX\Trackpoint.cs" />
+    <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="NavMenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

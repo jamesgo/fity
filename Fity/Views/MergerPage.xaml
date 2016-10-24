@@ -5,6 +5,7 @@
     xmlns:ctl="using:Fity.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -40,9 +41,8 @@
         </Grid.RowDefinitions>
         <CommandBar x:Name="topbar" Visibility="Visible" HorizontalContentAlignment="Stretch" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <AppBarButton Icon="Add" Label="Add" Click="MergerPage_AddFile" />
-            <AppBarButton Icon="Delete" Label="Delete" Click="MergerPage_BulkDelete" />
-            <AppBarSeparator/>
-            <AppBarButton Icon="Forward" Label="Next" Click="MergerPage_Next"/>
+            <AppBarButton Icon="List" Label="List" Click="MergerPage_List" />
+            <AppBarButton Icon="Map" Label="Map" Click="MergerPage_Map" />
             <AppBarSeparator/>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Clear" Click="MergerPage_Clear"/>
@@ -65,9 +65,10 @@
         <Grid x:Name="ContentContainer" Grid.Row="1" EntranceNavigationTransitionInfo.IsTargetElement="True" Margin="24,0">
             <TextBlock Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Files" />
             <ListBox x:Name="FilesList"></ListBox>
+            <Maps:MapControl x:Name="FilesMap" Visibility="Collapsed"></Maps:MapControl>
         </Grid>
 
-        <CommandBar x:Name="bottombar" Grid.Row="2" Visibility="Collapsed" HorizontalContentAlignment="Stretch" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <CommandBar x:Name="bottombar" Grid.Row="2" Visibility="Visible" HorizontalContentAlignment="Stretch" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <AppBarButton Icon="Edit" Label="Edit"/>
             <AppBarButton Icon="Delete" Label="Delete"/>
             <AppBarSeparator/>
