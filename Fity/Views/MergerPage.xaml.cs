@@ -55,6 +55,8 @@ namespace Fity.Views
             IReadOnlyList<StorageFile> files = await openPicker.PickMultipleFilesAsync();
             if (files.Count > 0)
             {
+                var defaultLocationInputs = new List<Tuple<double, double, int>>();
+
                 // Application now has read/write access to the picked file(s)
                 foreach (StorageFile file in files)
                 {
@@ -62,17 +64,35 @@ namespace Fity.Views
                     var gpsFileInfo = file.ToGpsFileInfo();
                     var loader = this.DataManager.AddToSession(gpsFileInfo);
 
-                    foreach (var trackpoint in (await loader.Task).TrainingCenterDatabase.Activities.Activities.First().Lap.Trackpoints.Trackpoints)
+                    var trackpoints = (await loader.Task).TrainingCenterDatabase.Activities.Activities.First().Lap.Trackpoints.Trackpoints;
+                    foreach (var trackpoint in trackpoints)
                     {
-                        var icon = new MapIcon();
-                        icon.Location = new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition
+                        if (trackpoint.Position != null)
                         {
-                            Latitude = trackpoint.Position.LatitudeDegrees,
-                            Longitude = trackpoint.Position.LongitudeDegrees
-                        });
-                        this.FilesMap.MapElements.Add(icon);
+                            var icon = new MapIcon();
+                            icon.Location = new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition
+                            {
+                                Latitude = trackpoint.Position.LatitudeDegrees,
+                                Longitude = trackpoint.Position.LongitudeDegrees
+                            });
+                            this.FilesMap.MapElements.Add(icon);
+                        }
                     }
+
+                    defaultLocationInputs.Add(
+                        new Tuple<double, double, int>(
+                            trackpoints.Where(tp => tp.Position != null).Average(tp => tp.Position.LatitudeDegrees),
+                            trackpoints.Where(tp => tp.Position != null).Average(tp => tp.Position.LongitudeDegrees),
+                            trackpoints.Count(tp => tp.Position != null)));
                 }
+                var latitude = defaultLocationInputs.Sum(dp => dp.Item1 * dp.Item3) / defaultLocationInputs.Sum(dp => dp.Item3);
+                var longitude = defaultLocationInputs.Sum(dp => dp.Item2 * dp.Item3) / defaultLocationInputs.Sum(dp => dp.Item3);
+                MapControl.SetLocation(this.FilesMap, new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition
+                {
+                    Latitude = latitude,
+                    Longitude = longitude
+                }));
+                this.FilesMap.ZoomLevel = 14;
             }
         }
 
