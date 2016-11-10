@@ -1,4 +1,5 @@
 ﻿using Fity.Data;
+using Fity.Data.TCX;
 using Fity.Utils;
 using System;
 using System.Collections.Generic;
@@ -64,27 +65,20 @@ namespace Fity.Views
                     var gpsFileInfo = file.ToGpsFileInfo();
                     var loader = this.DataManager.AddToSession(gpsFileInfo);
 
-                    var trackpoints = (await loader.Task).TrainingCenterDatabase.Activities.Activities.First().Lap.Trackpoints.Trackpoints;
-                    foreach (var trackpoint in trackpoints)
+                    var gprx = await loader.Task;
+                    var activityExtended = new GprxExtended(gprx);
+
+                    foreach (var mapEle in activityExtended.GetMapElements())
                     {
-                        if (trackpoint.Position != null)
-                        {
-                            var icon = new MapIcon();
-                            icon.Location = new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition
-                            {
-                                Latitude = trackpoint.Position.LatitudeDegrees,
-                                Longitude = trackpoint.Position.LongitudeDegrees
-                            });
-                            this.FilesMap.MapElements.Add(icon);
-                        }
+                        this.FilesMap.MapElements.Add(mapEle);
                     }
 
-                    defaultLocationInputs.Add(
-                        new Tuple<double, double, int>(
-                            trackpoints.Where(tp => tp.Position != null).Average(tp => tp.Position.LatitudeDegrees),
-                            trackpoints.Where(tp => tp.Position != null).Average(tp => tp.Position.LongitudeDegrees),
-                            trackpoints.Count(tp => tp.Position != null)));
+                    if (activityExtended.HasGps())
+                    {
+                        defaultLocationInputs.Add(activityExtended.GetDefaultLocationWithWeights());
+                    }
                 }
+
                 var latitude = defaultLocationInputs.Sum(dp => dp.Item1 * dp.Item3) / defaultLocationInputs.Sum(dp => dp.Item3);
                 var longitude = defaultLocationInputs.Sum(dp => dp.Item2 * dp.Item3) / defaultLocationInputs.Sum(dp => dp.Item3);
                 MapControl.SetLocation(this.FilesMap, new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition
