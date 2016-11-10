@@ -12,11 +12,11 @@ namespace Fity.Utils
             this.tp = tp;
         }
 
-        public Position Position { get { return this.tp.Position; } }
+        public Position Position => this.tp.Position;
 
-        public bool HasPosition { get { return this.tp.Position?.LatitudeDegrees != null && this.tp.Position?.LongitudeDegrees != null; } }
+        public bool HasPosition => this.tp.Position?.LatitudeDegrees != null && this.tp.Position?.LongitudeDegrees != null;
 
-        public HeartRateInBeatsPerMinute HeartRateBpm { get { return this.tp.HeartRateBpm; } }
+        public HeartRateInBeatsPerMinute HeartRateBpm => this.tp.HeartRateBpm;
 
         private DateTime? timeUtc;
 
@@ -36,6 +36,6 @@ namespace Fity.Utils
             }
         }
 
-        public bool IsValid { get { return this.TimeUtc != null; } }
+        public bool IsValid => this.TimeUtc != null;
     }
 }

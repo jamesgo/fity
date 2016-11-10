@@ -40,15 +40,9 @@ namespace Fity.Utils
             }
         }
 
-        public bool HasGps()
-        {
-            return this.trackpointsWithPosition.Any();
-        }
+        public bool HasGps => this.trackpointsWithPosition.Any();
 
-        public bool HasHeartRate()
-        {
-            return this.trackpointsWithHeartRate.Any();
-        }
+        public bool HasHeartRate => this.trackpointsWithHeartRate.Any();
 
         public Tuple<double, double, int> GetDefaultLocationWithWeights()
         {
