@@ -133,6 +133,10 @@
     <Compile Include="Views\BasicSubPage.xaml.cs">
       <DependentUpon>BasicSubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\GprxExtended.cs" />
+    <Compile Include="Utils\Interpolation\IInterpolator.cs" />
+    <Compile Include="Utils\Interpolation\InterpolationDatapoint.cs" />
+    <Compile Include="Utils\Interpolation\LinearInterpolator.cs" />
     <Compile Include="Views\MergerPage.xaml.cs">
       <DependentUpon>MergerPage.xaml</DependentUpon>
     </Compile>
@@ -145,6 +149,7 @@
     <Compile Include="Views\LandingPage.xaml.cs">
       <DependentUpon>LandingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\TrackpointExtended.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

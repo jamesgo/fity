@@ -13,9 +13,6 @@ namespace Fity.Data.TCX
         [XmlElement("Time")]
         public string Time { get; set; }
 
-        [XmlIgnore]
-        public DateTime? TimeUtc => this.Time != null ? (DateTime?)DateTime.Parse(this.Time) : null;
-
         [XmlElement("DistanceMeters")]
         public double DistanceMeters { get; set; }
 
