@@ -309,6 +309,9 @@
         <Setter Property="Margin" Value="24,4,0,0"/>
     </Style>
 
+    <Style x:Key="BodyListItemStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
+        <Setter Property="Margin" Value="20,4,0,0"/>
+    </Style>
     <Style x:Key="NarrowPageTitleTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource PageTitleTextBlockStyle}">
         <Setter Property="Margin" Value="0,4,0,0"/>
     </Style>

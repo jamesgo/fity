@@ -41,30 +41,23 @@
 
         <c:PageHeader x:Name="pageHeader">
             <c:PageHeader.HeaderContent>
-                <TextBlock x:Name="title" Style="{StaticResource PageTitleTextBlockStyle}" Text="App Overview"/>
+                <TextBlock x:Name="title" Style="{StaticResource PageTitleTextBlockStyle}" Text="Welcome to Fity!"/>
             </c:PageHeader.HeaderContent>
         </c:PageHeader>
 
         <ScrollViewer Grid.Row="1" EntranceNavigationTransitionInfo.IsTargetElement="True" IsTabStop="True" Margin="12,4,0,0">
             <StackPanel x:Name="ContentContainer" Margin="12,0,24,0">
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">Top-Level Navigation</TextBlock>
-                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,4">This sample demonstrates a universal Windows app with top-level navigation.</TextBlock>
+                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,4">Fity is an open source GPS file utility. With fity you can:</TextBlock>
 
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,12,0,4">Overview</TextBlock>
-                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,4">The root of the app is an AppShell of type Page instead of a Frame.
-                    It uses a SplitView to present both the top-level navigation menu and a Frame for navigating between pages in the app.  The AppShell also
-                    provides basic keyboarding behavior for unhandled key presses.  The navigation menu is implemented using a customized ListView and
-                    to enable the expected keyboarding experience.  The "hamburger" button for the app is floating in the top corner of the app at a
-                    higher z-order.  To enable content on individual pages to be aware of the floating "hamburger" the app uses a PageHeader control
-                    that is aware of the "hamburger".
-                </TextBlock>
 
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,12,0,4">Things to see:</TextBlock>
-                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,8"> 1) App.xaml - The startup sequence using AppShell as the root element instead of a Frame.</TextBlock>
-                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,8"> 2) AppShell.xaml - The "chrome" of the app.</TextBlock>
-                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,8"> 3) PageHeader.xaml - Control to wrap an item on a Page to avoid visual overlap with the floating hamburger.</TextBlock>
-                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,8"> 4) Styles.xaml - Styles including one for a hamburger button.</TextBlock>
-                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,8"> 5) NavMenuListView class - A customized ListView to show the navigation items and handle keyboarding.</TextBlock>
+                <StackPanel Margin="0,20,0,0">
+                    <TextBlock Style="{StaticResource BodyListItemStyle}" x:Name="FeatureList1" TextWrapping="Wrap" Text="• View multiple activities on a single map"/>
+                    <TextBlock Style="{StaticResource BodyListItemStyle}" x:Name="FeatureList2" TextWrapping="Wrap" Text="• Load heart rate data from multiple TCX files"/>
+                    <TextBlock Style="{StaticResource BodyListItemStyle}" x:Name="FeatureList3" TextWrapping="Wrap" Text="• Merge all TCX files with heart rate data" />
+                </StackPanel>
+                <StackPanel Margin="0,20,0,0">
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" x:Name="GetStarted" TextWrapping="Wrap">Click "<Bold>Merge</Bold>" to get started!</TextBlock>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -32,27 +32,22 @@ namespace Fity
             {
                 new NavMenuItem()
                 {
-                    Symbol = Symbol.Contact,
-                    Label = "Basic Page",
-                    DestPage = typeof(BasicPage)
-                },
-                new NavMenuItem()
-                {
-                    Symbol = Symbol.Edit,
-                    Label = "CommandBar Page",
-                    DestPage = typeof(CommandBarPage)
-                },
-                new NavMenuItem()
-                {
-                    Symbol = Symbol.Favorite,
-                    Label = "Drill In Page",
-                    DestPage = typeof(DrillInPage)
+                    Symbol = Symbol.Home,
+                    Label = "Intro",
+                    DestPage = typeof(LandingPage),
+                    IsSelected = true
                 },
                 new NavMenuItem()
                 {
                     Symbol = Symbol.Remote,
-                    Label = "Merger Page",
+                    Label = "Merge",
                     DestPage = typeof(MergerPage)
+                },
+                new NavMenuItem()
+                {
+                    Symbol = Symbol.Help,
+                    Label = "About",
+                    DestPage = typeof(AboutPage),
                 },
             });
 
@@ -73,6 +68,8 @@ namespace Fity
 
                 this.CheckTogglePaneButtonSizeChanged();
 
+                this.SetMainPanelToSelected();
+
                 var titleBar = Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar;
                 titleBar.IsVisibleChanged += TitleBar_IsVisibleChanged;
             };
@@ -91,6 +88,16 @@ namespace Fity
 
 
             NavMenuList.ItemsSource = navlist;
+        }
+
+        private void SetMainPanelToSelected()
+        {
+            var item = navlist.Single(ni => ni.IsSelected);
+
+            if (item.DestPage != null && item.DestPage != this.AppFrame.CurrentSourcePageType)
+            {
+                this.AppFrame.Navigate(item.DestPage, item.Arguments);
+            }
         }
 
         public Frame AppFrame { get { return this.frame; } }
