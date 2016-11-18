@@ -158,6 +158,7 @@
                                               ItemContainerStyle="{StaticResource NavMenuItemContainerStyle}"
                                               ItemTemplate="{StaticResource NavMenuItemTemplate}"
                                               ItemInvoked="NavMenuList_ItemInvoked"/>
+                    <!--
                     <Rectangle x:Name="NavPaneDivider"
                                Grid.Row="1"
                                Grid.ColumnSpan="3"
@@ -178,6 +179,7 @@
                             Content="&#xE713;"
                             AutomationProperties.Name="Settings"
                             ToolTipService.ToolTip="Settings"/>
+                    -->
                 </Grid>
             </SplitView.Pane>
 

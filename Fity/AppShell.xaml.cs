@@ -292,7 +292,7 @@ namespace Fity
         public void OpenNavePane()
         {
             TogglePaneButton.IsChecked = true;
-            NavPaneDivider.Visibility = Visibility.Visible;
+            //NavPaneDivider.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -302,11 +302,11 @@ namespace Fity
         /// <param name="args"></param>
         private void RootSplitView_PaneClosed(SplitView sender, object args)
         {
-            NavPaneDivider.Visibility = Visibility.Collapsed;
+            //NavPaneDivider.Visibility = Visibility.Collapsed;
 
             // Prevent focus from moving to elements when they're not visible on screen
-            FeedbackNavPaneButton.IsTabStop = false;
-            SettingsNavPaneButton.IsTabStop = false;
+            //FeedbackNavPaneButton.IsTabStop = false;
+            //SettingsNavPaneButton.IsTabStop = false;
         }
 
         /// <summary>
@@ -328,11 +328,11 @@ namespace Fity
         /// <param name="e"></param>
         private void TogglePaneButton_Checked(object sender, RoutedEventArgs e)
         {
-            NavPaneDivider.Visibility = Visibility.Visible;
+            //NavPaneDivider.Visibility = Visibility.Visible;
             this.CheckTogglePaneButtonSizeChanged();
 
-            FeedbackNavPaneButton.IsTabStop = true;
-            SettingsNavPaneButton.IsTabStop = true;
+            //FeedbackNavPaneButton.IsTabStop = true;
+            //SettingsNavPaneButton.IsTabStop = true;
         }
 
         /// <summary>
