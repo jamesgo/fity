@@ -89,6 +89,8 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="Assets\SplashScreen.scale-400.png" />
+    <Content Include="Assets\StoreLogo.scale-400.png" />
     <Content Include="Data\Samples\2016-09-05_Lunch Run_Running %281%29.tcx" />
     <Content Include="Data\Samples\2016-09-05_Lunch Run_Running.tcx" />
     <None Include="project.json" />
@@ -127,11 +129,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemInformationHelpers.cs" />
     <Compile Include="Triggers\IsTenFootTrigger.cs" />
-    <Compile Include="Views\BasicPage.xaml.cs">
-      <DependentUpon>BasicPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\BasicSubPage.xaml.cs">
-      <DependentUpon>BasicSubPage.xaml</DependentUpon>
+    <Compile Include="Views\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\GprxExtended.cs" />
     <Compile Include="Utils\Interpolation\IInterpolator.cs" />
@@ -139,12 +138,6 @@
     <Compile Include="Utils\Interpolation\LinearInterpolator.cs" />
     <Compile Include="Views\MergerPage.xaml.cs">
       <DependentUpon>MergerPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CommandBarPage.xaml.cs">
-      <DependentUpon>CommandBarPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DrillInPage.xaml.cs">
-      <DependentUpon>DrillInPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LandingPage.xaml.cs">
       <DependentUpon>LandingPage.xaml</DependentUpon>
@@ -191,23 +184,11 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Views\BasicPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\BasicSubPage.xaml">
+    <Page Include="Views\AboutPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MergerPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\CommandBarPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\DrillInPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

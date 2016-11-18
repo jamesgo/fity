@@ -67,17 +67,5 @@
             <ListBox x:Name="FilesList"></ListBox>
             <Maps:MapControl x:Name="FilesMap" Visibility="Collapsed"></Maps:MapControl>
         </Grid>
-
-        <CommandBar x:Name="bottombar" Grid.Row="2" Visibility="Visible" HorizontalContentAlignment="Stretch" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <AppBarButton Icon="Edit" Label="Edit"/>
-            <AppBarButton Icon="Delete" Label="Delete"/>
-            <AppBarSeparator/>
-            <AppBarToggleButton Icon="Sort" Label="Sort"/>
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Label="Menu Item 1"/>
-                <AppBarButton Label="Menu Item 2"/>
-                <AppBarButton Label="Menu Item 3"/>
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
     </Grid>
 </Page>

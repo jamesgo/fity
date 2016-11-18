@@ -73,7 +73,7 @@ namespace Fity.Views
                         this.FilesMap.MapElements.Add(mapEle);
                     }
 
-                    if (activityExtended.HasGps())
+                    if (activityExtended.HasGps)
                     {
                         defaultLocationInputs.Add(activityExtended.GetDefaultLocationWithWeights());
                     }
@@ -81,12 +81,14 @@ namespace Fity.Views
 
                 var latitude = defaultLocationInputs.Sum(dp => dp.Item1 * dp.Item3) / defaultLocationInputs.Sum(dp => dp.Item3);
                 var longitude = defaultLocationInputs.Sum(dp => dp.Item2 * dp.Item3) / defaultLocationInputs.Sum(dp => dp.Item3);
-                MapControl.SetLocation(this.FilesMap, new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition
-                {
-                    Latitude = latitude,
-                    Longitude = longitude
-                }));
-                this.FilesMap.ZoomLevel = 14;
+                
+                // TODO: Set default map location based on inputs. Currently not working
+                //MapControl.SetLocation(this.FilesMap, new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition
+                //{
+                //    Latitude = latitude,
+                //    Longitude = longitude
+                //}));
+                //this.FilesMap.ZoomLevel = 14;
             }
         }
 
