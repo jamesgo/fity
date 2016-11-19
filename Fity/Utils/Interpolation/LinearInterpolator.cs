@@ -41,7 +41,7 @@ namespace Fity.Utils.Interpolation
                 point1 = dataset.First();
                 point2 = dataset.Skip(1).First();
             }
-            else if (time > dataset.Max(dp => dp.Time))
+            else if (time >= dataset.Max(dp => dp.Time))
             {
                 point1 = dataset.Reverse().Skip(1).First();
                 point2 = dataset.Reverse().First();
@@ -52,7 +52,7 @@ namespace Fity.Utils.Interpolation
                 point2 = null;
                 for (int i = 0; i < dataset.Count; i++)
                 {
-                    if (dataset[i].Time >= time)
+                    if (dataset[i].Time > time)
                     {
                         point1 = dataset[i - 1];
                         point2 = dataset[i];
