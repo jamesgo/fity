@@ -3,39 +3,52 @@ using System;
 
 namespace Fity.Utils
 {
-    internal class TrackpointExtended
+    public class TrackpointExtended
     {
-        private Trackpoint tp;
-
         public TrackpointExtended(Trackpoint tp)
         {
-            this.tp = tp;
-        }
+            this.HeartRateBpm = tp.HeartRateBpm;
+            this.Position = tp.Position;
 
-        public Position Position => this.tp.Position;
-
-        public bool HasPosition => this.tp.Position?.LatitudeDegrees != null && this.tp.Position?.LongitudeDegrees != null;
-
-        public HeartRateInBeatsPerMinute HeartRateBpm => this.tp.HeartRateBpm;
-
-        private DateTime? timeUtc;
-
-        public DateTime? TimeUtc
-        {
-            get
+            DateTime result;
+            if (DateTime.TryParse(tp.Time, out result))
             {
-                if (this.timeUtc == null)
-                {
-                    DateTime result;
-                    if (DateTime.TryParse(this.tp.Time, out result))
-                    {
-                        this.timeUtc = result;
-                    }
-                }
-                return this.timeUtc;
+                this.TimeUtc = result;
+            }
+            else
+            {
+                this.IsValid = false;
             }
         }
 
-        public bool IsValid => this.TimeUtc != null;
+        private TrackpointExtended(TrackpointExtended tp, HeartRateInBeatsPerMinute newHeartRate = null, Position newPosition = null)
+        {
+            this.HeartRateBpm = newHeartRate ?? tp.HeartRateBpm;
+            this.Position = newPosition ?? tp.Position;
+            this.TimeUtc = tp.TimeUtc;
+            this.IsValid = tp.IsValid;
+        }
+
+        public TrackpointExtended UpdateClone(HeartRateInBeatsPerMinute newHeartRate = null, Position newPosition = null)
+        {
+            if ((newHeartRate == null || newHeartRate == this.HeartRateBpm) && (newPosition == null || newPosition == this.Position))
+            {
+                return this;
+            }
+
+            return new TrackpointExtended(this, newHeartRate, newPosition);
+        }
+
+        public readonly Position Position;
+
+        public bool HasPosition => this.Position?.LatitudeDegrees != null && this.Position?.LongitudeDegrees != null;
+
+        public readonly HeartRateInBeatsPerMinute HeartRateBpm;
+
+        public bool HasHeartRate => this.HeartRateBpm?.Value != null;
+
+        public DateTime TimeUtc { get; private set; }
+
+        public bool IsValid { get; private set; } = true;
     }
 }

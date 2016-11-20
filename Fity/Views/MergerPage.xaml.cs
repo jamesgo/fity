@@ -42,6 +42,7 @@ namespace Fity.Views
         {
             this.DataManager = new GpsDataManager();
             this.FilesMap.MapServiceToken = Constants.BingMapsKey;
+            this.MergedMap.MapServiceToken = Constants.BingMapsKey;
         }
 
         private async void MergerPage_AddFile(object sender, RoutedEventArgs e)
@@ -64,10 +65,11 @@ namespace Fity.Views
                     this.FilesList.Items.Add(file.Name);
                     var gpsFileInfo = file.ToGpsFileInfo();
                     var loader = this.DataManager.AddToSession(gpsFileInfo);
+                }
 
-                    var gprx = await loader.Task;
-                    var activityExtended = new GprxExtended(gprx);
-
+                var activityManager = new ActivityManager(this.DataManager);
+                foreach (var activityExtended in await activityManager.GetActivities())
+                {
                     foreach (var mapEle in activityExtended.GetMapElements())
                     {
                         this.FilesMap.MapElements.Add(mapEle);
@@ -77,6 +79,12 @@ namespace Fity.Views
                     {
                         defaultLocationInputs.Add(activityExtended.GetDefaultLocationWithWeights());
                     }
+                }
+
+                var mergedActivity = await activityManager.GetMerged();
+                foreach (var mapEle in mergedActivity.GetMapElements())
+                {
+                    this.MergedMap.MapElements.Add(mapEle);
                 }
 
                 var latitude = defaultLocationInputs.Sum(dp => dp.Item1 * dp.Item3) / defaultLocationInputs.Sum(dp => dp.Item3);
@@ -94,14 +102,28 @@ namespace Fity.Views
 
         private void MergerPage_List(object sender, RoutedEventArgs e)
         {
-            this.FilesList.Visibility = Visibility.Visible;
+            this.FilesListPanel.Visibility = Visibility.Visible;
             this.FilesMap.Visibility = Visibility.Collapsed;
+            this.MergedMap.Visibility = Visibility.Collapsed;
         }
 
         private void MergerPage_Map(object sender, RoutedEventArgs e)
         {
-            this.FilesList.Visibility = Visibility.Collapsed;
+            this.FilesListPanel.Visibility = Visibility.Collapsed;
             this.FilesMap.Visibility = Visibility.Visible;
+            this.MergedMap.Visibility = Visibility.Collapsed;
+        }
+
+        private void MergerPage_Next(object sender, RoutedEventArgs e)
+        {
+            this.FilesListPanel.Visibility = Visibility.Collapsed;
+            this.FilesMap.Visibility = Visibility.Collapsed;
+            this.MergedMap.Visibility = Visibility.Visible;
+        }
+
+        private void MergerPage_Save(object sender, RoutedEventArgs e)
+        {
+            // TODO: 
         }
 
         private void MergerPage_Clear(object sender, RoutedEventArgs e)

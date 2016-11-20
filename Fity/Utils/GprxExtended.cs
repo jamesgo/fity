@@ -8,19 +8,22 @@ using Fity.Utils.Interpolation;
 
 namespace Fity.Utils
 {
-    internal class GprxExtended
+    public class GprxExtended
     {
-        private Gprx gprx;
+        private readonly TrackpointExtended[] trackpoints;
 
-        private TrackpointExtended[] trackpoints => gprx.TrainingCenterDatabase.Activities.Activities.First().Lap.Trackpoints.Trackpoints.Select(tp => new TrackpointExtended(tp)).ToArray();
+        public IEnumerable<TrackpointExtended> TrackpointsWithPosition => trackpoints.Where(tp => tp.HasPosition).ToList();
 
-        private IEnumerable<TrackpointExtended> trackpointsWithPosition => trackpoints.Where(tp => tp.IsValid && tp.HasPosition).ToList();
-
-        private IEnumerable<TrackpointExtended> trackpointsWithHeartRate => trackpoints.Where(tp => tp.IsValid && tp.HeartRateBpm?.Value != null).ToList();
+        public IEnumerable<TrackpointExtended> TrackpointsWithHeartRate => trackpoints.Where(tp => tp.HasHeartRate).ToList();
 
         public GprxExtended(Gprx gprx)
         {
-            this.gprx = gprx;
+            this.trackpoints = gprx.TrainingCenterDatabase.Activities.Activities.First().Lap.Trackpoints.Trackpoints.Select(tp => new TrackpointExtended(tp)).Where(tp => tp.IsValid).ToArray();
+        }
+
+        public GprxExtended(IEnumerable<TrackpointExtended> trackpoints)
+        {
+            this.trackpoints = trackpoints.ToArray();
         }
 
         public IEnumerable<MapElement> GetMapElements()
@@ -30,6 +33,8 @@ namespace Fity.Utils
                 if (trackpoint.Position != null)
                 {
                     var icon = new MapIcon();
+                    icon.Title = trackpoint.HasHeartRate ? trackpoint.HeartRateBpm.Value.ToString() : "NoHR";
+
                     icon.Location = new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition
                     {
                         Latitude = trackpoint.Position.LatitudeDegrees,
@@ -40,48 +45,16 @@ namespace Fity.Utils
             }
         }
 
-        public bool HasGps => this.trackpointsWithPosition.Any();
+        public bool HasGps => this.TrackpointsWithPosition.Any();
 
-        public bool HasHeartRate => this.trackpointsWithHeartRate.Any();
+        public bool HasHeartRate => this.TrackpointsWithHeartRate.Any();
 
         public Tuple<double, double, int> GetDefaultLocationWithWeights()
         {
             return new Tuple<double, double, int>(
-                trackpointsWithPosition.Average(tp => tp.Position.LatitudeDegrees),
-                trackpointsWithPosition.Average(tp => tp.Position.LongitudeDegrees),
-                trackpointsWithPosition.Count());
-        }
-
-        public Position GetInterpolatedGps(DateTime time)
-        {
-            var latitudeInterpolater = new LinearInterpolater(this.trackpointsWithPosition.Select(tp => new InterpolationDatapoint
-            {
-                Time = tp.TimeUtc.Value,
-                Value = tp.Position.LatitudeDegrees
-            }));
-            var longitudeInterpolater = new LinearInterpolater(this.trackpointsWithPosition.Select(tp => new InterpolationDatapoint
-            {
-                Time = tp.TimeUtc.Value,
-                Value = tp.Position.LongitudeDegrees
-            }));
-            return new Position
-            {
-                LatitudeDegrees = latitudeInterpolater.GetAtTime(time),
-                LongitudeDegrees = longitudeInterpolater.GetAtTime(time)
-            };
-        }
-
-        public HeartRateInBeatsPerMinute GetInterpolatedHeartRate(DateTime time)
-        {
-            var heartrateInterpolator = new LinearInterpolater(this.trackpointsWithHeartRate.Select(tp => new InterpolationDatapoint
-            {
-                Time = tp.TimeUtc.Value,
-                Value = tp.HeartRateBpm.Value
-            }));
-            return new HeartRateInBeatsPerMinute
-            {
-                Value = (float)heartrateInterpolator.GetAtTime(time)
-            };
+                TrackpointsWithPosition.Average(tp => tp.Position.LatitudeDegrees),
+                TrackpointsWithPosition.Average(tp => tp.Position.LongitudeDegrees),
+                TrackpointsWithPosition.Count());
         }
     }
 }
