@@ -11,7 +11,19 @@ namespace Fity.Data
         private IDictionary<IGpsFileInfo, GprxLoader> gpsFiles = new Dictionary<IGpsFileInfo, GprxLoader>();
         public GprxLoader AddToSession(IGpsFileInfo filePath)
         {
-            return GpsLoader.LoadGprx(filePath);
+            var gprx = GpsLoader.LoadGprx(filePath);
+            gpsFiles.Add(filePath, gprx);
+            return gprx;
+        }
+
+        internal IEnumerable<GprxLoader> GetAll()
+        {
+            return gpsFiles.Values;
+        }
+
+        internal Task LoadAllAsync()
+        {
+            return Task.WhenAll(gpsFiles.Values.Select(l => l.Task));
         }
 
         public Task<Gprx> Get(IGpsFileInfo file)

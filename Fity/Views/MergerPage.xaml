@@ -40,11 +40,13 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <CommandBar x:Name="topbar" Visibility="Visible" HorizontalContentAlignment="Stretch" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <AppBarButton Icon="Add" Label="Add" Click="MergerPage_AddFile" />
             <AppBarButton Icon="List" Label="List" Click="MergerPage_List" />
             <AppBarButton Icon="Map" Label="Map" Click="MergerPage_Map" />
+            <AppBarButton Icon="Next" Label="Merge" Click="MergerPage_Next" />
+            <AppBarButton Icon="Save" Label="Save" Click="MergerPage_Save" Visibility="Collapsed" />
             <AppBarSeparator/>
             <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Add file(s)" Click="MergerPage_AddFile" />
                 <AppBarButton Label="Clear" Click="MergerPage_Clear"/>
             </CommandBar.SecondaryCommands>
             <CommandBar.Content>
@@ -55,17 +57,16 @@
                 </ctl:PageHeader>
             </CommandBar.Content>
         </CommandBar>
-
-        <ctl:PageHeader x:Name="pageTitleContainer" Visibility="Collapsed">
-            <ctl:PageHeader.HeaderContent>
-                <TextBlock x:Name="AltHeaderTextBlock" Text="Commandbar Page" Style="{StaticResource PageTitleTextBlockStyle}"/>
-            </ctl:PageHeader.HeaderContent>
-        </ctl:PageHeader>
-
+        
         <Grid x:Name="ContentContainer" Grid.Row="1" EntranceNavigationTransitionInfo.IsTargetElement="True" Margin="24,0">
-            <TextBlock Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Files" />
-            <ListBox x:Name="FilesList"></ListBox>
-            <Maps:MapControl x:Name="FilesMap" Visibility="Collapsed"></Maps:MapControl>
+            <StackPanel x:Name="FilesListPanel">
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Files" />
+                <ListBox x:Name="FilesList" />
+                <Button x:Name="FilesListAddButton" Click="MergerPage_AddFile" Content="Add file(s)" />
+            </StackPanel>
+            <Maps:MapControl x:Name="FilesMap" Visibility="Collapsed" />
+            <Maps:MapControl x:Name="MergedMap" Visibility="Collapsed" />
         </Grid>
+        
     </Grid>
 </Page>
