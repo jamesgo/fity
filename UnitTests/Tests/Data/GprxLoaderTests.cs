@@ -16,7 +16,7 @@ namespace UnitTests
                 await StorageFile.GetFileFromApplicationUriAsync(
                     new Uri(@"ms-appx:///Data/Samples/2016-09-05_Lunch Run_Running.tcx")));
 
-            var gprxLoader = new GprxLoader(fileInfo);
+            var gprxLoader = new TcxLoader(fileInfo);
             var tcx = await gprxLoader.Task;
 
             Assert.IsNotNull(tcx);
@@ -38,7 +38,7 @@ namespace UnitTests
                 await StorageFile.GetFileFromApplicationUriAsync(
                     new Uri(@"ms-appx:///Data/Samples/2016-09-05_Lunch Run_Running (1).tcx")));
 
-            var gprxLoader = new GprxLoader(fileInfo);
+            var gprxLoader = new TcxLoader(fileInfo);
             var tcx = await gprxLoader.Task;
 
             Assert.IsNotNull(tcx);

@@ -7,11 +7,11 @@ using System.Xml.Serialization;
 
 namespace Fity.Data
 {
-    public class GprxLoader
+    public class TcxLoader
     {
         private IGpsFileInfo filePath;
 
-        public GprxLoader(IGpsFileInfo filePath)
+        public TcxLoader(IGpsFileInfo filePath)
         {
             this.filePath = filePath;
             this.CancellationToken = new CancellationTokenSource();
@@ -19,12 +19,12 @@ namespace Fity.Data
             this.Task = Load();
         }
 
-        private async Task<Gprx> Load()
+        private async Task<Tcx> Load()
         {
             using (TextReader reader = new StreamReader(await this.filePath.GetStream()))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(TrainingCenterDatabase));
-                return new Gprx
+                return new Tcx
                 {
                     TrainingCenterDatabase = (TrainingCenterDatabase)serializer.Deserialize(reader)
                 };
@@ -33,7 +33,7 @@ namespace Fity.Data
 
         private CancellationTokenSource CancellationToken { get; set; }
 
-        public Task<Gprx> Task { get; private set; }
+        public Task<Tcx> Task { get; private set; }
 
         internal void Cancel()
         {

@@ -1,4 +1,4 @@
-﻿using Fity.Data.TCX;
+﻿using Fity.Models;
 using Fity.Utils.Interpolation;
 using System;
 using System.Collections.Generic;
@@ -10,20 +10,44 @@ namespace Fity.Utils
 {
     public class ActivityMerger
     {
-        private readonly IEnumerable<GprxExtended> activities;
+        private readonly IEnumerable<Session> sessions;
 
-        public IEnumerable<TrackpointExtended> TrackpointsWithPosition => this.activities.SelectMany(a => a.TrackpointsWithPosition);
+        public IEnumerable<Trackpoint> TrackpointsWithPosition => this.sessions.SelectMany(s => s.Activities.SelectMany(a => a.Lap.TrackpointsWithPosition));
 
-        public IEnumerable<TrackpointExtended> TrackpointsWithHeartRate => this.activities.SelectMany(a => a.TrackpointsWithHeartRate);
+        public IEnumerable<Trackpoint> TrackpointsWithHeartRate => this.sessions.SelectMany(s => s.Activities.SelectMany(a => a.Lap.TrackpointsWithHeartRate));
 
-        public ActivityMerger(IEnumerable<GprxExtended> activities)
+        public ActivityMerger(IEnumerable<Session> sessions)
         {
-            this.activities = activities;
+            this.sessions = sessions;
         }
 
-        public IEnumerable<TrackpointExtended> GetMerged()
+        public Session GetMerged()
         {
-            var mergedTrackpoints = this.activities.SelectMany(a => a.TrackpointsWithPosition);
+            var orderedActivities = this.sessions.SelectMany(s => s.Activities).OrderBy(a => a.Lap.StartTime).ToList();
+
+            // TODO: Copy non-null properties from all sessions to fill output session.
+            var session = new Session()
+            {
+                Activities = new List<Activity>
+                {
+                    new Activity
+                    {
+                        Lap = new Lap(orderedActivities.First().Lap.StartTime)
+                        {
+
+                            Trackpoints = GetMergedTrackpoints()
+                        }
+                    }
+                }
+            };
+
+            return session;
+        }
+
+
+        private IEnumerable<Trackpoint> GetMergedTrackpoints()
+        {
+            var mergedTrackpoints = this.sessions.SelectMany(s => s.Activities.SelectMany(a => a.Lap.TrackpointsWithPosition));
 
             foreach (var trackpoint in mergedTrackpoints.Where(tp => !tp.HasHeartRate))
             {
@@ -56,7 +80,7 @@ namespace Fity.Utils
             var heartrateInterpolator = new LinearInterpolater(this.TrackpointsWithHeartRate.Select(tp => new InterpolationDatapoint
             {
                 Time = tp.TimeUtc,
-                Value = tp.HeartRateBpm.Value
+                Value = tp.HeartRate.Value
             }));
             return new HeartRateInBeatsPerMinute
             {
