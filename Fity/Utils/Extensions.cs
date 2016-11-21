@@ -14,5 +14,6 @@ namespace Fity.Utils
         {
             return new GpsStorageFileInfo(storageFile);
         }
+
     }
 }

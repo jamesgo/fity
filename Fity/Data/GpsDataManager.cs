@@ -8,15 +8,20 @@ namespace Fity.Data
 {
     public class GpsDataManager
     {
-        private IDictionary<IGpsFileInfo, GprxLoader> gpsFiles = new Dictionary<IGpsFileInfo, GprxLoader>();
-        public GprxLoader AddToSession(IGpsFileInfo filePath)
+        private IDictionary<IGpsFileInfo, TcxLoader> gpsFiles = new Dictionary<IGpsFileInfo, TcxLoader>();
+        public TcxLoader AddToSession(IGpsFileInfo filePath)
         {
             var gprx = GpsLoader.LoadGprx(filePath);
             gpsFiles.Add(filePath, gprx);
             return gprx;
         }
 
-        internal IEnumerable<GprxLoader> GetAll()
+        internal IEnumerable<IGpsFileInfo> GetKeys()
+        {
+            return gpsFiles.Keys;
+        }
+
+        internal IEnumerable<TcxLoader> GetAll()
         {
             return gpsFiles.Values;
         }
@@ -26,9 +31,9 @@ namespace Fity.Data
             return Task.WhenAll(gpsFiles.Values.Select(l => l.Task));
         }
 
-        public Task<Gprx> Get(IGpsFileInfo file)
+        public Task<Tcx> Get(IGpsFileInfo file)
         {
-            GprxLoader fileTask;
+            TcxLoader fileTask;
             this.gpsFiles.TryGetValue(file, out fileTask);
             return fileTask.Task;
         }

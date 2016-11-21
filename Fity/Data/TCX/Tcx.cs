@@ -2,7 +2,7 @@
 
 namespace Fity.Data
 {
-    public class Gprx
+    public class Tcx
     {
         public TrainingCenterDatabase TrainingCenterDatabase { get; set; }
     }

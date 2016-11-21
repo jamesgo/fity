@@ -1,17 +1,22 @@
 ﻿using Fity.Data;
 using Fity.Data.TCX;
+using Fity.Models;
 using Fity.Utils;
+using NotificationsExtensions.Toasts;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
@@ -30,6 +35,9 @@ namespace Fity.Views
     /// </summary>
     public sealed partial class MergerPage : Page
     {
+        private ActivityManager activityManager;
+        private Session mergedActivity;
+
         public GpsDataManager DataManager { get; private set; }
 
         public MergerPage()
@@ -67,8 +75,8 @@ namespace Fity.Views
                     var loader = this.DataManager.AddToSession(gpsFileInfo);
                 }
 
-                var activityManager = new ActivityManager(this.DataManager);
-                foreach (var activityExtended in await activityManager.GetActivities())
+                this.activityManager = new ActivityManager(this.DataManager);
+                foreach (var activityExtended in await this.activityManager.GetSessions())
                 {
                     foreach (var mapEle in activityExtended.GetMapElements())
                     {
@@ -81,8 +89,8 @@ namespace Fity.Views
                     }
                 }
 
-                var mergedActivity = await activityManager.GetMerged();
-                foreach (var mapEle in mergedActivity.GetMapElements())
+                this.mergedActivity = await this.activityManager.GetMerged();
+                foreach (var mapEle in this.mergedActivity.GetMapElements())
                 {
                     this.MergedMap.MapElements.Add(mapEle);
                 }
@@ -105,6 +113,8 @@ namespace Fity.Views
             this.FilesListPanel.Visibility = Visibility.Visible;
             this.FilesMap.Visibility = Visibility.Collapsed;
             this.MergedMap.Visibility = Visibility.Collapsed;
+            this.NextAppBarButton.Visibility = Visibility.Visible;
+            this.SaveAppBarButton.Visibility = Visibility.Collapsed;
         }
 
         private void MergerPage_Map(object sender, RoutedEventArgs e)
@@ -112,6 +122,8 @@ namespace Fity.Views
             this.FilesListPanel.Visibility = Visibility.Collapsed;
             this.FilesMap.Visibility = Visibility.Visible;
             this.MergedMap.Visibility = Visibility.Collapsed;
+            this.NextAppBarButton.Visibility = Visibility.Visible;
+            this.SaveAppBarButton.Visibility = Visibility.Collapsed;
         }
 
         private void MergerPage_Next(object sender, RoutedEventArgs e)
@@ -119,11 +131,65 @@ namespace Fity.Views
             this.FilesListPanel.Visibility = Visibility.Collapsed;
             this.FilesMap.Visibility = Visibility.Collapsed;
             this.MergedMap.Visibility = Visibility.Visible;
+            this.NextAppBarButton.Visibility = Visibility.Collapsed;
+            this.SaveAppBarButton.Visibility = Visibility.Visible;
         }
 
-        private void MergerPage_Save(object sender, RoutedEventArgs e)
+        private async void MergerPage_Save(object sender, RoutedEventArgs e)
         {
-            // TODO: 
+            var savePicker = new FileSavePicker();
+            savePicker.SuggestedStartLocation =
+                PickerLocationId.DocumentsLibrary;
+
+            // Dropdown of file types the user can save the file as
+            savePicker.FileTypeChoices.Add("TCX file", new List<string>() { ".tcx" });
+            // Default file name if the user does not type one in or select a file to replace
+            savePicker.SuggestedFileName = $"{this.DataManager.GetKeys().OrderBy(k => k.FileName.Length).First().FileName}_Merged";
+            var file = await savePicker.PickSaveFileAsync();
+            if (file != null)
+            {
+                // Prevent updates to the remote version of the file until
+                // we finish making changes and call CompleteUpdatesAsync.
+                CachedFileManager.DeferUpdates(file);
+                // write to file
+
+
+                using (var stream = await file.OpenStreamForWriteAsync())
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(TrainingCenterDatabase));
+                    serializer.Serialize(stream, this.mergedActivity.ToContract().TrainingCenterDatabase);
+                };
+
+                // Let Windows know that we're finished changing the file so
+                // the other app can update the remote version of the file.
+                // Completing updates may require Windows to ask for user input.
+                var status = await CachedFileManager.CompleteUpdatesAsync(file);
+                if (status == Windows.Storage.Provider.FileUpdateStatus.Complete)
+                {
+                    Show(new ToastContent
+                    {
+                        Visual = new ToastVisual
+                        {
+                            TitleText = new ToastText { Text = $"File {file.Name} was saved." }
+                        }
+                    });
+                }
+                else
+                {
+                    Show(new ToastContent
+                    {
+                        Visual = new ToastVisual
+                        {
+                            TitleText = new ToastText { Text = $"File {file.Name} couldn't be saved." }
+                        }
+                    });
+                }
+            }
+        }
+
+        private void Show(ToastContent content)
+        {
+            ToastNotificationManager.CreateToastNotifier().Show(new ToastNotification(content.GetXml()));
         }
 
         private void MergerPage_Clear(object sender, RoutedEventArgs e)

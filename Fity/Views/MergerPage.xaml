@@ -42,8 +42,8 @@
         <CommandBar x:Name="topbar" Visibility="Visible" HorizontalContentAlignment="Stretch" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <AppBarButton Icon="List" Label="List" Click="MergerPage_List" />
             <AppBarButton Icon="Map" Label="Map" Click="MergerPage_Map" />
-            <AppBarButton Icon="Next" Label="Merge" Click="MergerPage_Next" />
-            <AppBarButton Icon="Save" Label="Save" Click="MergerPage_Save" Visibility="Collapsed" />
+            <AppBarButton x:Name="NextAppBarButton" Icon="Next" Label="Merge" Click="MergerPage_Next" />
+            <AppBarButton x:Name="SaveAppBarButton" Icon="Save" Label="Save" Click="MergerPage_Save" Visibility="Collapsed" />
             <AppBarSeparator/>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Add file(s)" Click="MergerPage_AddFile" />
