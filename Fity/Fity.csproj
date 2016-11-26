@@ -91,8 +91,6 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <Content Include="Assets\SplashScreen.scale-400.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
-    <Content Include="Data\Samples\2016-09-05_Lunch Run_Running %281%29.tcx" />
-    <Content Include="Data\Samples\2016-09-05_Lunch Run_Running.tcx" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +141,7 @@
     <Compile Include="Utils\Interpolation\IInterpolator.cs" />
     <Compile Include="Utils\Interpolation\InterpolationDatapoint.cs" />
     <Compile Include="Utils\Interpolation\LinearInterpolator.cs" />
-    <Compile Include="Views\ActivityManager.cs" />
+    <Compile Include="Utils\ActivityManager.cs" />
     <Compile Include="Views\MergerPage.xaml.cs">
       <DependentUpon>MergerPage.xaml</DependentUpon>
     </Compile>
