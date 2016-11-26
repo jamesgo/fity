@@ -11,6 +11,8 @@ namespace Fity.Models
             this.Position = newPosition ?? tp.Position;
             this.TimeUtc = tp.TimeUtc;
             this.IsValid = tp.IsValid;
+            this.AltitudeMeters = tp.AltitudeMeters;
+            this.DistanceMeters = tp.DistanceMeters;
         }
 
         public Trackpoint(DateTime? result, Position position = null, HeartRateInBeatsPerMinute heartRate = null)
