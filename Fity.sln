@@ -25,6 +25,7 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3532B571-8340-4F0F-A67E-B6A89084F152}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{3532B571-8340-4F0F-A67E-B6A89084F152}.Debug|Any CPU.Build.0 = Debug|x86
+		{3532B571-8340-4F0F-A67E-B6A89084F152}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{3532B571-8340-4F0F-A67E-B6A89084F152}.Debug|ARM.ActiveCfg = Debug|ARM
 		{3532B571-8340-4F0F-A67E-B6A89084F152}.Debug|ARM.Build.0 = Debug|ARM
 		{3532B571-8340-4F0F-A67E-B6A89084F152}.Debug|ARM.Deploy.0 = Debug|ARM
