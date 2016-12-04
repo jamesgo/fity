@@ -16,6 +16,8 @@ namespace Fity.Utils
 
         public IEnumerable<Trackpoint> TrackpointsWithHeartRate => this.sessions.SelectMany(s => s.Activities.SelectMany(a => a.Lap.TrackpointsWithHeartRate));
 
+        public bool HasHeartRate => this.TrackpointsWithHeartRate.Count() >= 2;
+
         public ActivityMerger(IEnumerable<Session> sessions)
         {
             this.sessions = sessions;
@@ -49,9 +51,16 @@ namespace Fity.Utils
         {
             var mergedTrackpoints = this.sessions.SelectMany(s => s.Activities.SelectMany(a => a.Lap.TrackpointsWithPosition));
 
-            foreach (var trackpoint in mergedTrackpoints.Where(tp => !tp.HasHeartRate))
+            foreach (var trackpoint in mergedTrackpoints)
             {
-                yield return trackpoint.UpdateClone(this.GetInterpolatedHeartRate(trackpoint.TimeUtc));
+                if (this.HasHeartRate && !trackpoint.HasHeartRate)
+                {
+                    yield return trackpoint.UpdateClone(this.GetInterpolatedHeartRate(trackpoint.TimeUtc));
+                }
+                else
+                {
+                    yield return trackpoint;
+                }
             }
         }
 

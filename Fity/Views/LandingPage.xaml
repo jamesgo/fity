@@ -51,9 +51,9 @@
 
 
                 <StackPanel Margin="0,20,0,0">
+                    <TextBlock Style="{StaticResource BodyListItemStyle}" x:Name="FeatureList2" TextWrapping="Wrap" Text="• Load position and heart rate data from multiple TCX files"/>
                     <TextBlock Style="{StaticResource BodyListItemStyle}" x:Name="FeatureList1" TextWrapping="Wrap" Text="• View multiple activities on a single map"/>
-                    <TextBlock Style="{StaticResource BodyListItemStyle}" x:Name="FeatureList2" TextWrapping="Wrap" Text="• Load heart rate data from multiple TCX files"/>
-                    <TextBlock Style="{StaticResource BodyListItemStyle}" x:Name="FeatureList3" TextWrapping="Wrap" Text="• Merge all TCX files with heart rate data" />
+                    <TextBlock Style="{StaticResource BodyListItemStyle}" x:Name="FeatureList3" TextWrapping="Wrap" Text="• Produce a merged TCX file" />
                 </StackPanel>
                 <StackPanel Margin="0,20,0,0">
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" x:Name="GetStarted" TextWrapping="Wrap">Click "<Bold>Merge</Bold>" to get started!</TextBlock>
