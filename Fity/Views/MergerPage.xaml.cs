@@ -65,8 +65,6 @@ namespace Fity.Views
             IReadOnlyList<StorageFile> files = await openPicker.PickMultipleFilesAsync();
             if (files.Count > 0)
             {
-                var defaultLocationInputs = new List<Tuple<double, double, int>>();
-
                 // Application now has read/write access to the picked file(s)
                 foreach (StorageFile file in files)
                 {
@@ -76,6 +74,11 @@ namespace Fity.Views
                 }
 
                 this.activityManager = new ActivityManager(this.DataManager);
+                double minLatitude, minLongitude;
+                minLatitude = minLongitude = long.MaxValue;
+                double maxLatitude, maxLongitude;
+                maxLatitude = maxLongitude = long.MinValue;
+
                 foreach (var activityExtended in await this.activityManager.GetSessions())
                 {
                     foreach (var mapEle in activityExtended.GetMapElements())
@@ -85,7 +88,13 @@ namespace Fity.Views
 
                     if (activityExtended.HasGps)
                     {
-                        defaultLocationInputs.Add(activityExtended.GetDefaultLocationWithWeights());
+                        foreach (var tpPos in activityExtended.TrackpointsWithPosition.Select(tp => tp.Position))
+                        {
+                            minLatitude = Math.Min(minLatitude, tpPos.LatitudeDegrees);
+                            minLongitude = Math.Min(minLongitude, tpPos.LongitudeDegrees);
+                            maxLatitude = Math.Max(maxLatitude, tpPos.LatitudeDegrees);
+                            maxLongitude = Math.Max(maxLongitude, tpPos.LongitudeDegrees);
+                        }
                     }
                 }
 
@@ -95,18 +104,38 @@ namespace Fity.Views
                     this.MergedMap.MapElements.Add(mapEle);
                 }
 
-                var latitude = defaultLocationInputs.Sum(dp => dp.Item1 * dp.Item3) / defaultLocationInputs.Sum(dp => dp.Item3);
-                var longitude = defaultLocationInputs.Sum(dp => dp.Item2 * dp.Item3) / defaultLocationInputs.Sum(dp => dp.Item3);
-                
-                // TODO: Set default map location based on inputs. Currently not working
-                //MapControl.SetLocation(this.FilesMap, new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition
-                //{
-                //    Latitude = latitude,
-                //    Longitude = longitude
-                //}));
-                //this.FilesMap.ZoomLevel = 14;
+                // Set default map location based on input data
+                var latitude = (maxLatitude + minLatitude) / 2;
+                var longitude = (maxLongitude + minLongitude) / 2;
+                this.FilesMap.Center = new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition
+                {
+                    Latitude = latitude,
+                    Longitude = longitude
+                });
+
+                const double mapMargin = .85;
+
+                double latitudeDiffInMeters = (maxLatitude - minLatitude) * 111000;
+                double longitudeDiffInMeters = (maxLongitude - minLongitude) * 111000;
+                double desiredZoomLevel = 
+                    Math.Log(
+                        Math.Abs(156543.04 * Math.Cos(latitude) / 
+                            Math.Max(
+                            latitudeDiffInMeters / this.ContentContainer.ActualHeight,
+                            longitudeDiffInMeters / this.ContentContainer.ActualWidth) * mapMargin), 
+                        newBase: 2);
+                this.FilesMap.ZoomLevel = this.BoundZoomLevel(desiredZoomLevel);
+
+                this.MergedMap.Center = new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition
+                {
+                    Latitude = latitude,
+                    Longitude = longitude
+                });
+                this.MergedMap.ZoomLevel = this.BoundZoomLevel(desiredZoomLevel);
             }
         }
+
+        private double BoundZoomLevel(double zoomLevel) => Math.Max(1, Math.Min(19, zoomLevel));
 
         private void MergerPage_List(object sender, RoutedEventArgs e)
         {
