@@ -60,8 +60,8 @@ namespace Fity.Views
             FileOpenPicker openPicker = new FileOpenPicker();
             openPicker.ViewMode = PickerViewMode.List;
             openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            openPicker.FileTypeFilter.Add(".tcx");
             openPicker.FileTypeFilter.Add(".gprx");
-            openPicker.FileTypeFilter.Add("*");
             IReadOnlyList<StorageFile> files = await openPicker.PickMultipleFilesAsync();
             if (files.Count > 0)
             {
