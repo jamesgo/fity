@@ -21,7 +21,7 @@
 
 
         <StackPanel x:Name="ContentContainer" Margin="24,0,24,0">
-            <TextBlock Style="{StaticResource BodyTextBlockStyle}">Git repository: <Hyperlink>https://github.com/jamesgo/fity</Hyperlink></TextBlock>
+            <TextBlock Style="{StaticResource BodyTextBlockStyle}">Git repository: <Hyperlink NavigateUri="https://github.com/jamesgo/fity">https://github.com/jamesgo/fity</Hyperlink></TextBlock>
         </StackPanel>
     </StackPanel>
 </Page>
