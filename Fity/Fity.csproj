@@ -129,6 +129,7 @@
     <Compile Include="Data\TCX\Trackpoint.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\Author.cs" />
+    <Compile Include="Models\FileLaunchParameters.cs" />
     <Compile Include="Models\HeartRateInBeatsPerMinute.cs" />
     <Compile Include="Models\Lap.cs" />
     <Compile Include="Models\Position.cs" />
@@ -147,6 +148,10 @@
     <Compile Include="Utils\Interpolation\InterpolationDatapoint.cs" />
     <Compile Include="Utils\Interpolation\LinearInterpolator.cs" />
     <Compile Include="Utils\ActivityManager.cs" />
+    <Compile Include="Views\ActivityDetailPage.xaml.cs">
+      <DependentUpon>ActivityDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\MapDataManager.cs" />
     <Compile Include="Views\MergerPage.xaml.cs">
       <DependentUpon>MergerPage.xaml</DependentUpon>
     </Compile>
@@ -196,6 +201,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Views\AboutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ActivityDetailPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

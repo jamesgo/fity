@@ -8,7 +8,7 @@ using System.Threading;
 using Fity.Models;
 using Fity.Data.TCX;
 
-namespace Fity.Views
+namespace Fity.Utils
 {
     internal class ActivityManager
     {
