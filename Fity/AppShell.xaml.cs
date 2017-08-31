@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Fity.Controls;
 using Fity.Views;
+using Windows.ApplicationModel.Activation;
+using Fity.Models;
 
 namespace Fity
 {
@@ -92,9 +94,9 @@ namespace Fity
 
         private void SetMainPanelToSelected()
         {
-            var item = navlist.Single(ni => ni.IsSelected);
+            var item = navlist.SingleOrDefault(ni => ni.IsSelected);
 
-            if (item.DestPage != null && item.DestPage != this.AppFrame.CurrentSourcePageType)
+            if (item?.DestPage != null && item.DestPage != this.AppFrame.CurrentSourcePageType)
             {
                 this.AppFrame.Navigate(item.DestPage, item.Arguments);
             }
@@ -377,6 +379,16 @@ namespace Fity
             {
                 args.ItemContainer.ClearValue(AutomationProperties.NameProperty);
             }
+        }
+
+        public void FileLaunch(FileLaunchParameters fileLaunchParams)
+        {
+            foreach (var navItem in this.navlist)
+            {
+                navItem.IsSelected = false;
+            }
+
+            this.AppFrame.Navigate(typeof(ActivityDetailPage), fileLaunchParams);
         }
     }
 }
