@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
+using System.Collections.Generic;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -18,6 +21,15 @@ namespace Fity
         /// </summary>
         public App()
         {
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                Converters = new List<JsonConverter>
+                {
+                    new VersionConverter(),
+                    new StringEnumConverter()
+                }
+            };
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
