@@ -39,6 +39,11 @@ namespace Fity.Utils
                 throw new NotSupportedException("Load not complete. Please await LoadCompleteAsync() before calling this method");
             }
 
+            if (actualWidth <= 0 || actualHeight <= 0)
+            {
+                throw new NotSupportedException($"Invalid width ({actualWidth}) / height ({actualHeight})");
+            }
+
             double latitudeDiffInMeters = (this.maxLatitude - this.minLatitude) * 111000;
             double longitudeDiffInMeters = (this.maxLongitude - this.minLongitude) * 111000;
             double desiredZoomLevel =
