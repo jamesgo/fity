@@ -41,6 +41,12 @@ namespace Fity
                 },
                 new NavMenuItem()
                 {
+                    Symbol = Symbol.Library,
+                    Label = "Library",
+                    DestPage = typeof(LibraryPage)
+                },
+                new NavMenuItem()
+                {
                     Symbol = Symbol.Remote,
                     Label = "Merge",
                     DestPage = typeof(MergerPage)

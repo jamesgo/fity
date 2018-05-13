@@ -140,6 +140,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemInformationHelpers.cs" />
     <Compile Include="Triggers\IsTenFootTrigger.cs" />
+    <Compile Include="Utils\FolderMonitor\FolderMonitor.cs" />
     <Compile Include="Views\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
@@ -157,6 +158,9 @@
     </Compile>
     <Compile Include="Views\LandingPage.xaml.cs">
       <DependentUpon>LandingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LibraryPage.xaml.cs">
+      <DependentUpon>LibraryPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Trackpoint.cs" />
   </ItemGroup>
@@ -207,6 +211,10 @@
     <Page Include="Views\ActivityDetailPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LibraryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MergerPage.xaml">
       <Generator>MSBuild:Compile</Generator>
