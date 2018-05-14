@@ -36,5 +36,12 @@ namespace Fity.Views
 
             //_wrapPanelCollection.Remove(item);
         }
+
+        //private async void rc_RefreshRequested(RefreshContainer sender, RefreshRequestedEventArgs args)
+        //{
+        //    //Do some work to show new Content! Once the work is done, call RefreshCompletionDeferral.Complete()
+        //    this.RefreshCompletionDeferral = args.GetDeferral();
+        //    await this.FolderMonitor.RefreshFilesAsync();
+        //}
     }
 }

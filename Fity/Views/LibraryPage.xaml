@@ -42,14 +42,18 @@
     </Page.Resources>
     
     <Grid>
-        <ListView Name="ListView"
+        <!--<RefreshContainer x:Name="rc" RefreshRequested="rc_RefreshRequested">-->
+            <ListView Name="ListView"
                   IsItemClickEnabled="True"
+                  BorderThickness="1" 
+                  BorderBrush="Black"
                   ItemTemplate="{StaticResource ActivityTemplate}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <toolkit:WrapPanel Name="WPanel" Margin="2" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ListView>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <toolkit:WrapPanel Name="WPanel" Margin="2" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ListView>
+        <!--</RefreshContainer>-->
     </Grid>
 </Page>
