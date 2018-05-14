@@ -58,8 +58,8 @@ namespace Fity.Views
             IReadOnlyList<StorageFile> files = await openPicker.PickMultipleFilesAsync();
             if (files.Count > 0)
             {
-                this.DataManager = new MapDataManager(files);
-                foreach (var fileName in this.DataManager.FileNames)
+                this.DataManager = new MapDataManager(files.Select(f => f.ToGpsFileInfo()));
+                foreach (var fileName in this.DataManager.Files.Select(f => f.FileName))
                 {
                     this.FilesList.Items.Add(fileName);
                 }

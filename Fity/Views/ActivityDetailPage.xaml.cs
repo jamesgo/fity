@@ -1,5 +1,8 @@
 ﻿using Fity.Models;
+using Fity.Models.Navigation;
 using Fity.Utils;
+using System.Linq;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -39,8 +42,14 @@ namespace Fity.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var fileLaunchParams = (FileLaunchParameters)e.Parameter;
-            this.DataManager = new MapDataManager(fileLaunchParams.Files);
+            if (e.Parameter is FileLaunchParameters fileLaunchParams)
+            {
+                this.DataManager = new MapDataManager(fileLaunchParams.Files.Select(f => ((StorageFile)f).ToGpsFileInfo()));
+            }
+            else if (e.Parameter is DetailsLaunchParameters detailsLaunchParams)
+            {
+                this.DataManager = new MapDataManager(detailsLaunchParams.Files);
+            }
         }
     }
 }

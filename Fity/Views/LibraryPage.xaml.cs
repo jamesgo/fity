@@ -1,6 +1,10 @@
 ﻿using Fity.Data;
+using Fity.Models;
+using Fity.Models.Navigation;
 using Fity.Utils.FolderMonitor;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Fity.Views
@@ -28,13 +32,18 @@ namespace Fity.Views
 
         private void ItemControl_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var item = e.ClickedItem as Tcx;
+            var item = e.ClickedItem as Session;
             if (item == null)
             {
                 return;
             }
 
-            //_wrapPanelCollection.Remove(item);
+            Frame rootFrame = Window.Current.Content as Frame;
+            var appShell = rootFrame.Content as AppShell;
+            appShell.AppFrame.Navigate(typeof(ActivityDetailPage), new DetailsLaunchParameters
+            {
+                Files = new List<IGpsFileInfo> { this.FolderMonitor.SessionFiles[item] }
+            });
         }
 
         //private async void rc_RefreshRequested(RefreshContainer sender, RefreshRequestedEventArgs args)

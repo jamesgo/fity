@@ -23,8 +23,7 @@ namespace Fity.Utils
         const double mapMargin = .85;
 
         public GpsDataManager DataManager { get; private set; }
-        public IReadOnlyList<IStorageItem> Files { get; }
-        public List<string> FileNames { get; }
+        public IEnumerable<IGpsFileInfo> Files { get; }
         public List<MapElement> MapElements { get; private set; }
         public List<MapElement> MergedMapElements { get; private set; }
         public Session MergedActivity { get; private set; }
@@ -57,20 +56,17 @@ namespace Fity.Utils
             return this.BoundZoomLevel(desiredZoomLevel);
         }
 
-        public MapDataManager(IReadOnlyList<IStorageItem> files)
+        public MapDataManager(IEnumerable<IGpsFileInfo> files)
         {
             this.DataManager = new GpsDataManager();
             this.Files = files;
 
-            this.FileNames = new List<string>();
             this.MapElements = new List<MapElement>();
             this.MergedMapElements = new List<MapElement>();
 
-            foreach (StorageFile file in this.Files)
+            foreach (var file in this.Files)
             {
-                this.FileNames.Add(file.Name);
-                var gpsFileInfo = file.ToGpsFileInfo();
-                var loader = this.DataManager.AddToSession(gpsFileInfo);
+                this.DataManager.AddToSession(file);
             }
         }
 

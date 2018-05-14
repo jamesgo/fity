@@ -129,7 +129,8 @@
     <Compile Include="Data\TCX\Trackpoint.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\Author.cs" />
-    <Compile Include="Models\FileLaunchParameters.cs" />
+    <Compile Include="Models\Navigation\DetailsLaunchParameters.cs" />
+    <Compile Include="Models\Navigation\FileLaunchParameters.cs" />
     <Compile Include="Models\HeartRateInBeatsPerMinute.cs" />
     <Compile Include="Models\Lap.cs" />
     <Compile Include="Models\Position.cs" />

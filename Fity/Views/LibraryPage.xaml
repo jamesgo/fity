@@ -45,8 +45,6 @@
         <!--<RefreshContainer x:Name="rc" RefreshRequested="rc_RefreshRequested">-->
             <ListView Name="ListView"
                   IsItemClickEnabled="True"
-                  BorderThickness="1" 
-                  BorderBrush="Black"
                   ItemTemplate="{StaticResource ActivityTemplate}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

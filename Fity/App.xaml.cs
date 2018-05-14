@@ -1,4 +1,5 @@
 ﻿using Fity.Models;
+using Fity.Models.Navigation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;

@@ -18,6 +18,7 @@ using Fity.Controls;
 using Fity.Views;
 using Windows.ApplicationModel.Activation;
 using Fity.Models;
+using Fity.Models.Navigation;
 
 namespace Fity
 {

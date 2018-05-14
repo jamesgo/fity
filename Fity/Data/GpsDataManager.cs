@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,10 @@ namespace Fity.Data
 {
     public class GpsDataManager
     {
-        private IDictionary<IGpsFileInfo, TcxLoader> gpsFiles = new Dictionary<IGpsFileInfo, TcxLoader>();
+        private ConcurrentDictionary<IGpsFileInfo, TcxLoader> gpsFiles = new ConcurrentDictionary<IGpsFileInfo, TcxLoader>();
         public TcxLoader AddToSession(IGpsFileInfo filePath)
         {
-            var gprx = GpsLoader.LoadGprx(filePath);
-            gpsFiles.Add(filePath, gprx);
-            return gprx;
+            return gpsFiles.GetOrAdd(filePath, fi => GpsLoader.LoadGprx(fi));
         }
 
         internal IEnumerable<KeyValuePair<IGpsFileInfo, TcxLoader>> GetAll()

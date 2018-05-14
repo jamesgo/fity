@@ -31,6 +31,9 @@ namespace Fity.Utils.FolderMonitor
         public ConcurrentDictionary<IGpsFileInfo, Session> GpsFiles { get; }
             = new ConcurrentDictionary<IGpsFileInfo, Session>();
 
+        public ConcurrentDictionary<Session, IGpsFileInfo> SessionFiles { get; }
+            = new ConcurrentDictionary<Session, IGpsFileInfo>();
+
         public event GpsFilesChangedHandler Files_Changed;
 
         public async Task InitializeAsync()
@@ -78,8 +81,9 @@ namespace Fity.Utils.FolderMonitor
                 loadedFiles.AsParallel().Select(async file =>
                 {
                     var loader = GpsLoader.LoadGprx(file);
-                    var loadedTcx = (await loader.Task).ToModel(file.FilePath);
-                    this.GpsFiles.TryAdd(file, loadedTcx);
+                    var session = (await loader.Task).ToModel(file.FilePath);
+                    this.GpsFiles.TryAdd(file, session);
+                    this.SessionFiles.TryAdd(session, file);
                 }));
         }
 
