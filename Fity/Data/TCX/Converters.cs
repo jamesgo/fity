@@ -1,5 +1,6 @@
 ﻿using Fity.Models;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace Fity.Data.TCX
@@ -8,7 +9,7 @@ namespace Fity.Data.TCX
     {
         #region Session
 
-        public static Tcx ToContract(this Session session)
+        public static Tcx ToContract(this Session session, string filePath)
         {
             if (session == null)
             {
@@ -28,14 +29,14 @@ namespace Fity.Data.TCX
             };
         }
 
-        public static Session ToModel(this Tcx tcx)
+        public static Session ToModel(this Tcx tcx, string filePath)
         {
             if (tcx == null)
             {
                 return null;
             }
 
-            return new Session
+            return new Session(filePath)
             {
                 Activities = tcx.TrainingCenterDatabase.Activities.Activities.Select(a => a.ToModel()).ToArray(),
                 Author = tcx.TrainingCenterDatabase.Author.ToModel()

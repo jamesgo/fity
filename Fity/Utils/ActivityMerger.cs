@@ -27,9 +27,11 @@ namespace Fity.Utils
         {
             var orderedActivities = this.sessions.SelectMany(s => s.Activities).OrderBy(a => a.Lap.StartTime).ToList();
 
+            var fileName = $"{this.sessions.Select(s => s.FileName).OrderBy(fn => fn.Length).First()}_Merged";
             // TODO: Copy non-null properties from all sessions to fill output session.
-            var session = new Session()
+            var session = new Session(fileName)
             {
+                FilePath = null,
                 Activities = new List<Activity>
                 {
                     new Activity
@@ -37,7 +39,7 @@ namespace Fity.Utils
                         Lap = new Lap(orderedActivities.First().Lap.StartTime)
                         {
 
-                            Trackpoints = GetMergedTrackpoints()
+                            Trackpoints = this.GetMergedTrackpoints()
                         }
                     }
                 }

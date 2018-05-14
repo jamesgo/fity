@@ -124,7 +124,7 @@ namespace Fity.Views
             // Dropdown of file types the user can save the file as
             savePicker.FileTypeChoices.Add("TCX file", new List<string>() { ".tcx" });
             // Default file name if the user does not type one in or select a file to replace
-            savePicker.SuggestedFileName = $"{this.DataManager.FileNames.OrderBy(fn => fn.Length).First()}_Merged";
+            savePicker.SuggestedFileName = this.DataManager.MergedActivity.FileName;
             var file = await savePicker.PickSaveFileAsync();
             if (file != null)
             {
@@ -137,7 +137,7 @@ namespace Fity.Views
                 using (var stream = await file.OpenStreamForWriteAsync())
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(TrainingCenterDatabase));
-                    serializer.Serialize(stream, this.DataManager.MergedActivity.ToContract().TrainingCenterDatabase);
+                    serializer.Serialize(stream, this.DataManager.MergedActivity.ToContract(file.Path).TrainingCenterDatabase);
                 };
 
                 // Let Windows know that we're finished changing the file so

@@ -31,7 +31,7 @@ namespace Fity.Utils
                     if (this.activities == null)
                     {
                         await this.dataManager.LoadAllAsync();
-                        this.activities = this.dataManager.GetAll().Select(l => l.Task.Result.ToModel());
+                        this.activities = this.dataManager.GetAll().Select(l => l.Value.Task.Result.ToModel(l.Key.FilePath));
                     }
                 }
                 finally { activitiesSemaphore.Release(); }

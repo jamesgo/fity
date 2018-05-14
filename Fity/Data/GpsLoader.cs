@@ -5,9 +5,9 @@ namespace Fity.Data
 {
     internal class GpsLoader
     {
-        internal static TcxLoader LoadGprx(IGpsFileInfo filePath)
+        internal static TcxLoader LoadGprx(IGpsFileInfo fileInfo)
         {
-            return new TcxLoader(filePath);
+            return new TcxLoader(fileInfo);
         }
     }
 }

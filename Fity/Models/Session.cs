@@ -5,11 +5,35 @@ using System.Linq;
 using Windows.UI.Xaml.Controls.Maps;
 using System;
 using Fity.Utils.Interpolation;
+using System.IO;
 
 namespace Fity.Models
 {
     public class Session
     {
+        public Session(string filePathOrName)
+        {
+            if (Path.IsPathRooted(filePathOrName))
+            {
+                this.FilePath = filePathOrName;
+                this.FileName = Path.GetFileNameWithoutExtension(this.FilePath);
+            }
+            else
+            {
+                this.FileName = filePathOrName;
+            }
+        }
+
+        public string FilePath { get; set; }
+
+        public IEnumerable<Activity> Activities { get; set; }
+
+        public string FileName { get; }
+
+        public float? Distance => this.Activities.Sum(a => a.Lap.DistanceMeters);
+
+        public float? AvgHeartRate => this.Activities.Average(a => a.Lap.AverageHeartRateBpm?.Value);
+
         private IEnumerable<Trackpoint> trackpoints => this.Activities.SelectMany(a => a.Lap?.Trackpoints).Where(tp => tp.IsValid);
 
         public IEnumerable<Trackpoint> TrackpointsWithPosition => trackpoints.Where(tp => tp.HasPosition).ToList();
@@ -34,8 +58,6 @@ namespace Fity.Models
                 }
             }
         }
-
-        public IEnumerable<Activity> Activities { get; set; }
 
         public bool HasGps => this.TrackpointsWithPosition.Any();
 

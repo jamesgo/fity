@@ -1,4 +1,5 @@
-﻿using Fity.Utils.FolderMonitor;
+﻿using Fity.Data;
+using Fity.Utils.FolderMonitor;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
 
@@ -13,26 +14,21 @@ namespace Fity.Views
         {
             this.InitializeComponent();
             this.FolderMonitor = new FolderMonitor(new string[] { @"C:\users\jamesg\Desktop\fd" });
+            this.FolderMonitor.Files_Changed += FolderMonitor_Changed;
 
-            this.Items = new ObservableCollection<LibraryItem>()
-            {
-                new LibraryItem
-                {
-                    Width = 123,
-                    Height = 123
-                }
-            };
-            this.ListView.ItemsSource = this.Items;
             this.ListView.ItemClick += ItemControl_ItemClick;
         }
 
         public FolderMonitor FolderMonitor { get; }
 
-        public ObservableCollection<LibraryItem> Items { get; }
+        private void FolderMonitor_Changed(object sender)
+        {
+            this.ListView.ItemsSource = this.FolderMonitor.GpsFiles.Values;
+        }
 
         private void ItemControl_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var item = e.ClickedItem as LibraryItem;
+            var item = e.ClickedItem as Tcx;
             if (item == null)
             {
                 return;
@@ -41,13 +37,4 @@ namespace Fity.Views
             //_wrapPanelCollection.Remove(item);
         }
     }
-
-    public class LibraryItem
-    {
-        public double Width { get; set; }
-
-        public double Height { get; set; }
-
-    }
-
 }

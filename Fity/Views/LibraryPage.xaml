@@ -8,7 +8,40 @@
     xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <DataTemplate x:Key="ActivityTemplate">
+            <Grid Width="240"
+                  Height="120"
+                  Margin="0">
+                <!--<Image HorizontalAlignment="Center"
+                       Stretch="UniformToFill">
+                    <Image.Source>
+                        <BitmapImage DecodePixelHeight="200"
+                                     UriSource="{Binding Thumbnail}" />
+                    </Image.Source>
+                </Image>-->
+                <Border VerticalAlignment="Bottom">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Offset="0" Color="Transparent" />
+                            <GradientStop Offset="1" Color="#33000000" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding FileName}" />
+                        <TextBlock Text="{Binding AvgHeartRate}" />
+                        <TextBlock Text="{Binding Distance}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </DataTemplate>
+        <Style TargetType="ListViewItem">
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+    </Page.Resources>
+    
+    <Grid>
         <ListView Name="ListView"
                   IsItemClickEnabled="True"
                   ItemTemplate="{StaticResource ActivityTemplate}">
@@ -19,35 +52,4 @@
             </ItemsControl.ItemsPanel>
         </ListView>
     </Grid>
-
-    <Page.Resources>
-        <DataTemplate x:Key="ActivityTemplate">
-            <Grid Width="120"
-                  Height="100"
-                  Margin="0">
-                <Image HorizontalAlignment="Center"
-                       Stretch="UniformToFill">
-                    <!--<Image.Source>
-                        <BitmapImage DecodePixelHeight="200"
-                                     UriSource="{Binding Thumbnail}" />
-                    </Image.Source>-->
-                </Image>
-                <Border VerticalAlignment="Bottom">
-                    <Border.Background>
-                        <LinearGradientBrush EndPoint="0,1">
-                            <GradientStop Offset="0" Color="Transparent" />
-                            <GradientStop Offset="1" Color="#33000000" />
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <TextBlock Margin="5,20,5,5"
-                               VerticalAlignment="Bottom"
-                               Text="{Binding Category}" />
-                </Border>
-            </Grid>
-        </DataTemplate>
-        <Style TargetType="ListViewItem">
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="0" />
-        </Style>
-    </Page.Resources>
 </Page>

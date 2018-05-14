@@ -16,14 +16,9 @@ namespace Fity.Data
             return gprx;
         }
 
-        internal IEnumerable<IGpsFileInfo> GetKeys()
+        internal IEnumerable<KeyValuePair<IGpsFileInfo, TcxLoader>> GetAll()
         {
-            return gpsFiles.Keys;
-        }
-
-        internal IEnumerable<TcxLoader> GetAll()
-        {
-            return gpsFiles.Values;
+            return gpsFiles;
         }
 
         internal Task LoadAllAsync()

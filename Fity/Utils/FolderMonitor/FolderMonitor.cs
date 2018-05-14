@@ -1,4 +1,6 @@
 ﻿using Fity.Data;
+using Fity.Data.TCX;
+using Fity.Models;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -26,7 +28,10 @@ namespace Fity.Utils.FolderMonitor
         private ConcurrentDictionary<StorageFolder, List<IGpsFileInfo>> FilesIndex { get; } 
             = new ConcurrentDictionary<StorageFolder, List<IGpsFileInfo>>();
 
-        public IEnumerable<IGpsFileInfo> Files => this.FilesIndex.SelectMany(kv => kv.Value);
+        public ConcurrentDictionary<IGpsFileInfo, Session> GpsFiles { get; }
+            = new ConcurrentDictionary<IGpsFileInfo, Session>();
+
+        public event GpsFilesChangedHandler Files_Changed;
 
         public async Task InitializeAsync()
         {
@@ -49,6 +54,8 @@ namespace Fity.Utils.FolderMonitor
             }
 
             await Task.WhenAll(tasks);
+
+            this.Files_Changed?.Invoke(this);
         }
 
         private async Task RefreshFolderAsync(StorageFolder folder)
@@ -66,6 +73,16 @@ namespace Fity.Utils.FolderMonitor
                 loadedFiles.Add(file.ToGpsFileInfo());
             }
             this.FilesIndex[folder] = loadedFiles;
+
+            await Task.WhenAll(
+                loadedFiles.AsParallel().Select(async file =>
+                {
+                    var loader = GpsLoader.LoadGprx(file);
+                    var loadedTcx = (await loader.Task).ToModel(file.FilePath);
+                    this.GpsFiles.TryAdd(file, loadedTcx);
+                }));
         }
+
+        public delegate void GpsFilesChangedHandler(object sender);
     }
 }
