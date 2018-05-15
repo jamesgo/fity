@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Fity.Data;
-using Windows.Storage;
+﻿using Fity.Data;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace UnitTests
 {

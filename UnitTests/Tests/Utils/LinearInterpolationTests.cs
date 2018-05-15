@@ -1,10 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Fity.Data;
-using Windows.Storage;
-using System.Threading.Tasks;
-using Fity.Utils.Interpolation;
+﻿using Fity.Utils.Interpolation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace UnitTests.Utils
 {
@@ -12,7 +10,7 @@ namespace UnitTests.Utils
     public class LinearInterpolationTests
     {
         [TestMethod]
-        public async Task Slope1()
+        public void Slope1()
         {
             var utcNow = DateTime.UtcNow;
 
@@ -29,7 +27,7 @@ namespace UnitTests.Utils
         }
 
         [TestMethod]
-        public async Task Slope2Offset()
+        public void Slope2Offset()
         {
             var utcNow = DateTime.UtcNow;
 

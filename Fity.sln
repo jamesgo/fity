@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fity", "Fity\Fity.csproj", "{3532B571-8340-4F0F-A67E-B6A89084F152}"
 EndProject
@@ -10,6 +10,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{54F7338D-8793-4B7E-8FB4-E4E6BC8E64A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{49D33D44-4EFA-4A10-8D65-BA8CE7B22179}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4ECBFEA9-EBA6-43DA-B1F5-110B311A6927}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,5 +78,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3532B571-8340-4F0F-A67E-B6A89084F152} = {5016D892-54D8-4878-846C-0460EC0D42BC}
 		{49D33D44-4EFA-4A10-8D65-BA8CE7B22179} = {54F7338D-8793-4B7E-8FB4-E4E6BC8E64A3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {552C3821-EF7A-4F28-AB6A-DAD34BCDA20A}
 	EndGlobalSection
 EndGlobal
