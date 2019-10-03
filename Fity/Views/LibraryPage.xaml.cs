@@ -6,24 +6,42 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace Fity.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class LibraryPage : Page
     {
         public LibraryPage()
         {
             this.InitializeComponent();
-            this.FolderMonitor = new FolderMonitor(new string[] { @"C:\users\jamesg\Desktop\fd" });
+            this.FolderMonitor = new FolderMonitor(new string[] { @"C:\Users\james\OneDrive\Desktop\fd" });
+
             this.FolderMonitor.Files_Changed += FolderMonitor_Changed;
 
             this.ListView.ItemClick += ItemControl_ItemClick;
         }
 
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            await this.FolderMonitor.InitializeAsync();
+        }
+
         public FolderMonitor FolderMonitor { get; }
+
+        private void Manage(object sender, object e)
+        {
+            //Frame rootFrame = Window.Current.Content as Frame;
+            //var appShell = rootFrame.Content as AppShell;
+            //appShell.AppFrame.Navigate(typeof(ManageLibraryPage));
+        }
+
+        private async void Refresh(object sender, object e)
+        {
+            await this.FolderMonitor.RefreshFilesAsync();
+        }
 
         private void FolderMonitor_Changed(object sender)
         {

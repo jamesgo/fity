@@ -1,9 +1,11 @@
 ﻿using Fity.Data;
 using Fity.Data.TCX;
 using Fity.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -16,10 +18,7 @@ namespace Fity.Utils.FolderMonitor
         public FolderMonitor(string[] paths)
         {
             this.Paths = paths;
-            this.initializeTask = this.InitializeAsync();
         }
-
-        private Task initializeTask;
 
         public string[] Paths { get; }
 
@@ -41,11 +40,44 @@ namespace Fity.Utils.FolderMonitor
             this.Folders = new List<StorageFolder>();
             foreach (var path in this.Paths)
             {
-                var folder = await StorageFolder.GetFolderFromPathAsync(path);
-                this.Folders.Add(folder);
+                this.Folders.Add(await StorageFolder.GetFolderFromPathAsync(path));
             }
 
             await this.RefreshFilesAsync();
+        }
+
+        public async Task AddPath(string path)
+        {
+            var storageFolder = await StorageFolder.GetFolderFromPathAsync(path);
+            this.Folders.Add(storageFolder);
+            await this.RefreshFolderAsync(storageFolder);
+            await this.BackupLibrary();
+        }
+
+        public async Task RemovePath(string path)
+        {
+            var folder = this.Folders.Single(f => f.Path.Equals(path, StringComparison.OrdinalIgnoreCase));
+            foreach (var fileInfo in this.FilesIndex[folder])
+            {
+                if (this.GpsFiles.TryRemove(fileInfo, out var session))
+                {
+                    this.SessionFiles.TryRemove(session, out var _);
+                }
+
+            }
+            await this.BackupLibrary();
+        }
+
+        private async Task BackupLibrary()
+        {
+            var libraryFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("library.json", CreationCollisionOption.ReplaceExisting);
+
+            var serializer = new JsonSerializer();
+
+            using (var streamWriter = new StreamWriter(await libraryFile.OpenStreamForWriteAsync()))
+            {
+                serializer.Serialize(streamWriter, libraryFile);
+            }
         }
 
         public async Task RefreshFilesAsync()

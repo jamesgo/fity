@@ -12,7 +12,7 @@ namespace UnitTests.Utils
     public class LinearInterpolationTests
     {
         [TestMethod]
-        public async Task Slope1()
+        public void Slope1()
         {
             var utcNow = DateTime.UtcNow;
 
@@ -29,7 +29,7 @@ namespace UnitTests.Utils
         }
 
         [TestMethod]
-        public async Task Slope2Offset()
+        public void Slope2Offset()
         {
             var utcNow = DateTime.UtcNow;
 

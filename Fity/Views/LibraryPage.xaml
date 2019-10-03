@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Fity"
+    xmlns:ctl="using:Fity.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
@@ -40,8 +41,16 @@
             <Setter Property="Padding" Value="0" />
         </Style>
     </Page.Resources>
-    
+
     <Grid>
+        <CommandBar x:Name="topbar" Visibility="Visible" HorizontalContentAlignment="Stretch" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <AppBarButton Icon="Library" Label="Manage" Click="Manage" />
+            <AppBarButton Icon="Refresh" Label="Refresh" Click="Refresh" />
+            <AppBarSeparator/>
+            <CommandBar.Content>
+                <TextBlock x:Name="HeaderTextBlock" Text="Library" Style="{StaticResource PageTitleTextBlockStyle}"/>
+            </CommandBar.Content>
+        </CommandBar>
         <!--<RefreshContainer x:Name="rc" RefreshRequested="rc_RefreshRequested">-->
             <ListView Name="ListView"
                   IsItemClickEnabled="True"
