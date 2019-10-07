@@ -1,9 +1,10 @@
 ﻿using Fity.Data;
 using Fity.Models;
 using Fity.Models.Navigation;
-using Fity.Utils.FolderMonitor;
+using Fity.Utils;
+using Fity.Utils.Library;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -15,7 +16,7 @@ namespace Fity.Views
         public LibraryPage()
         {
             this.InitializeComponent();
-            this.FolderMonitor = new FolderMonitor(new string[] { @"C:\Users\james\OneDrive\Desktop\fd" });
+            this.FolderMonitor = Singletons.FolderMonitor;
 
             this.FolderMonitor.Files_Changed += FolderMonitor_Changed;
 
@@ -31,16 +32,16 @@ namespace Fity.Views
 
         public FolderMonitor FolderMonitor { get; }
 
-        private void Manage(object sender, object e)
+        private void LibraryPage_Manage(object sender, RoutedEventArgs e)
         {
-            //Frame rootFrame = Window.Current.Content as Frame;
-            //var appShell = rootFrame.Content as AppShell;
-            //appShell.AppFrame.Navigate(typeof(ManageLibraryPage));
+            Frame rootFrame = Window.Current.Content as Frame;
+            var appShell = rootFrame.Content as AppShell;
+            appShell.AppFrame.Navigate(typeof(ManageLibraryPage));
         }
 
-        private async void Refresh(object sender, object e)
+        private async void LibraryPage_Refresh(object sender, RoutedEventArgs e)
         {
-            await this.FolderMonitor.RefreshFilesAsync();
+            await this.FolderMonitor.RefreshAsync();
         }
 
         private void FolderMonitor_Changed(object sender)

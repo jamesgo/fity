@@ -44,23 +44,28 @@
 
     <Grid>
         <CommandBar x:Name="topbar" Visibility="Visible" HorizontalContentAlignment="Stretch" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <AppBarButton Icon="Library" Label="Manage" Click="Manage" />
-            <AppBarButton Icon="Refresh" Label="Refresh" Click="Refresh" />
+            <AppBarButton Icon="Library" Label="Manage" Click="LibraryPage_Manage" />
+            <AppBarButton Icon="Refresh" Label="Refresh" Click="LibraryPage_Refresh" />
             <AppBarSeparator/>
+            <CommandBar.SecondaryCommands></CommandBar.SecondaryCommands>
             <CommandBar.Content>
                 <TextBlock x:Name="HeaderTextBlock" Text="Library" Style="{StaticResource PageTitleTextBlockStyle}"/>
             </CommandBar.Content>
         </CommandBar>
-        <!--<RefreshContainer x:Name="rc" RefreshRequested="rc_RefreshRequested">-->
-            <ListView Name="ListView"
-                  IsItemClickEnabled="True"
-                  ItemTemplate="{StaticResource ActivityTemplate}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <toolkit:WrapPanel Name="WPanel" Margin="2" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ListView>
-        <!--</RefreshContainer>-->
+        <Grid x:Name="ContentContainer" Grid.Row="1" EntranceNavigationTransitionInfo.IsTargetElement="True" Margin="24,0">
+            <StackPanel>
+            <!--<RefreshContainer x:Name="rc" RefreshRequested="rc_RefreshRequested">-->
+                <ListView Name="ListView"
+                        IsItemClickEnabled="True"
+                        ItemTemplate="{StaticResource ActivityTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <toolkit:WrapPanel Name="WPanel" Margin="2" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ListView>
+            </StackPanel>
+            <!--</RefreshContainer>-->
+        </Grid>
     </Grid>
 </Page>

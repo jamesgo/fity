@@ -1,0 +1,63 @@
+﻿<Page
+    x:Class="Fity.Views.ManageLibraryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctl="using:Fity.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ContentContainer.Margin" Value="24,0"/>
+                        <Setter Target="HeaderTextBlock.Style" Value="{StaticResource PageTitleTextBlockStyle}"/>
+                        <Setter Target="AltHeaderTextBlock.Style" Value="{StaticResource PageTitleTextBlockStyle}"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ContentContainer.Margin" Value="12,0"/>
+                        <Setter Target="HeaderTextBlock.Style" Value="{StaticResource NarrowPageTitleTextBlockStyle}"/>
+                        <Setter Target="AltHeaderTextBlock.Style" Value="{StaticResource NarrowPageTitleTextBlockStyle}"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <CommandBar x:Name="topbar" Visibility="Visible" HorizontalContentAlignment="Stretch" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <AppBarButton Icon="Add" Label="Add folder" Click="AddFolder" />
+            <AppBarButton Icon="Clear" Label="Clear" Click="Clear"/>
+            <CommandBar.Content>
+                <ctl:PageHeader>
+                    <ctl:PageHeader.HeaderContent>
+                        <TextBlock x:Name="HeaderTextBlock" Text="Manage library" Style="{StaticResource PageTitleTextBlockStyle}"/>
+                    </ctl:PageHeader.HeaderContent>
+                </ctl:PageHeader>
+            </CommandBar.Content>
+        </CommandBar>
+        
+        <Grid x:Name="ContentContainer" Grid.Row="1" EntranceNavigationTransitionInfo.IsTargetElement="True" Margin="24,0">
+            <StackPanel x:Name="FoldersListPanel">
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Folders" />
+                <ListBox x:Name="FoldersList" />
+                <Button x:Name="FolderListAddButton" Click="AddFolder" Content="Add folder" />
+            </StackPanel>
+        </Grid>
+        
+    </Grid>
+</Page>
