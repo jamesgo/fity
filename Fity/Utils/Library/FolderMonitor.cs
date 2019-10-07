@@ -165,8 +165,8 @@ namespace Fity.Utils.Library
 
         public StorageFolder Folder { get; private set; }
 
-        public List<IGpsFileInfo> FileInfos { get; private set; }
-            = new List<IGpsFileInfo>();
+        public HashSet<IGpsFileInfo> FileInfos { get; private set; }
+            = new HashSet<IGpsFileInfo>();
 
         public async Task InitializeAsync()
         {
@@ -182,14 +182,15 @@ namespace Fity.Utils.Library
                 ".tcx"
             };
 
-            var loadedFiles = new List<IGpsFileInfo>();
+            var loadedFiles = new HashSet<IGpsFileInfo>();
             var queryOptions = new QueryOptions(CommonFileQuery.OrderBySearchRank, fileTypeFilter);
             var files = await this.Folder.CreateFileQueryWithOptions(queryOptions).GetFilesAsync();
             foreach (var file in files)
             {
                 loadedFiles.Add(file.ToGpsFileInfo());
             }
-            this.FileInfos = loadedFiles;
+            this.FileInfos.IntersectWith(loadedFiles);
+            this.FileInfos.UnionWith(loadedFiles);
         }
 
     }

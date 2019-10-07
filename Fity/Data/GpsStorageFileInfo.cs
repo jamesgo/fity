@@ -32,5 +32,14 @@ namespace Fity.Data
         {
             return this.FileName.ToString();
         }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is GpsStorageFileInfo objFileInfo))
+            {
+                return false;
+            }
+            return this.FilePath.Equals(objFileInfo.FilePath);
+        }
     }
 }
